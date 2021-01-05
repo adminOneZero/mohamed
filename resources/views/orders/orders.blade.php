@@ -83,6 +83,7 @@
                                     <option value="تم التسليم">تم التسليم</option>
                                 </select>
                                 <input type="hidden" name="order_id" value="{{ $item->order_id }}">
+                                <input type="hidden" name="buyer_id" value="{{ $item->buyer_id }}">
                                 {{-- <input  value=""> --}}
                                 <button class="btn-base btn-success" type="submit"><i class="fa fa-sync"></i></button>
                             </form>

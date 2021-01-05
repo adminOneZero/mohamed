@@ -3,12 +3,22 @@
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 use Illuminate\Http\Request;
 
 class ordersController extends Controller
 {
-    //
+    // alert for users
+    function alert($message,$user_id) {
+        $result = DB::table('Notifications')->insert([
+          'message' => $message,
+          'user_id' => $user_id,
+          'time' => carbon::now()->toDateTimeString(),
+          'status' => 1,
+          ]);
+        return $result;
+    }
      //
      function get_orders(Request $request){
         $buyer_id = Auth::user()->id;
@@ -45,16 +55,37 @@ class ordersController extends Controller
         $buyer_id = Auth::user()->id;
         $order_id = $request->input('order_id');
         $new_status = $request->input('new_status');
+        $buyer_id = $request->input('buyer_id');
+        // dd($buyer_id);
         $all_status = ['التجهيز','الشحن','تم التسليم'];
         if(!\in_array($new_status,$all_status) AND !\is_numeric($id)){
             // dd('y');
             return back();
         }
         
+        // update order status
         $r = DB::table('orders')
         ->where('order_id','=',$order_id)
         ->update(['status'=>$new_status]);
-        // dd($r);
+
+        // notification messages
+        if ($new_status == 'تم التسليم') {
+            notify("الطلبيه رقم $order_id تم تسليمها","Toast","success");
+            $this->alert("الطلبيه رقم $order_id تم تسليمها",$buyer_id);
+            return back();
+        }
+
+        if ($new_status == 'الشحن') {
+            notify("الطلبيه رقم $order_id تم شحنها","Toast","success");
+            $this->alert("الطلبيه رقم $order_id تم شحنها",$buyer_id);
+            return back();
+        }
+
+        if ($new_status == 'التجهيز') {
+            notify("الطلبه رقم $order_id يتم تجهيزها للشحن","Toast","success");
+            $this->alert("الطلبه رقم $order_id يتم تجهيزها للشحن",$buyer_id);
+            return back();
+        }
         return back();
 
     }
