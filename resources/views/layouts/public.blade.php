@@ -60,13 +60,13 @@
                   @endif
                   {{-- <li><a href="#"><i class="fa fa-search"></i></a></li> --}}
                   
-                  <li>
-                    <form action="/search/">
+                  <form action="/search/" style="display: inline-block" >
+                  <li class="search">
                         @csrf
-                        <input type="search" name="search_text" placeholder="بحث">
-                        <input type="submit" value="search" class="fa fa-search">
-                    </form>
-                </li>
+                        <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+                        <input type="search" name="#" class="" placeholder="بحث">
+                    </li>
+                </form>
             </ul>
 
             <ul class="header-links-one col-lg-4 col-12">
@@ -144,6 +144,7 @@
         <script src="/js/jQuery-min.js"></script>
         <script src="/js/iziModal.min.js"></script>
         <script src="/js/iziToast.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
         <script src="/js/control.js"></script>
         <script src="/js/notify-sys.js"></script>
         <script src="@yield('js-page')"></script>

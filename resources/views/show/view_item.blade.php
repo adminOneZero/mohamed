@@ -23,22 +23,22 @@
                     </ol>
                     <div class="carousel-inner">
                         <div class="carousel-item active">
-                            <img src="{{ $item[0]->image1 }}" class="d-block w-100" alt="...">
+                            <img src="{{ $item[0]->image1 }}" class="d-block " style="height: 95vh;width:500px" alt="gomlaDresses">
                         </div>
                         <div class="carousel-item">
-                            <img src="{{ $item[0]->image2 }}" class="d-block w-100" alt="...">
+                            <img src="{{ $item[0]->image2 }}" class="d-block " style="height: 95vh;width:500px" alt="gomlaDresses">
                         </div>
                         <div class="carousel-item">
-                            <img src="{{ $item[0]->image3 }}" class="d-block w-100" alt="...">
+                            <img src="{{ $item[0]->image3 }}" class="d-block " style="height: 95vh;width:500px" alt="gomlaDresses">
                         </div>
                     </div>
                     <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
                         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
+                        <span class="sr-only">السابق</span>
                     </a>
                     <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
+                        <span class="sr-only">التالي</span>
                     </a>
                 </div>
             </div>

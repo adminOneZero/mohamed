@@ -14,7 +14,19 @@
                 <div class="porducer-me-box box-one">
                     <div class="row">
                         
-                        <form action="/basket/clear" method="POST" onsubmit="askUser("هل انت متاكد انك تريد تشيط هذا الحساب؟", "yes4active");">@csrf<input type="submit" value="clear"></form>
+                        @if (DB::table('basket')->count() > 0)
+                            
+                        <div class="tooles-button text-center ">
+                            <form action="/basket/clear" method="POST" style="display: inline-block">
+                                @csrf
+                                <button type="submit" class="clear">تنظيف العربه</button>
+                            </form>
+                            <form action="/basket/buy" method="POST" style="display: inline-block">
+                                @csrf
+                                <button type="submit" class="buy">شراء</button>
+                            </form>
+                        </div>
+                        @endif
 
                         @foreach ($items as $item)
                         <div class="col-md-4 col-sm-6  col-12">
@@ -35,10 +47,7 @@
                         
                         @endforeach
                         
-                        <form action="/basket/buy" method="POST">
-                            @csrf
-                            <input type="submit" value="Buy">
-                        </form>                      
+                                              
 
                     </div>
                 </div>
@@ -55,13 +64,14 @@
 
             </div>
 
-            <div class="col-12 text-center but-num">
+            {{-- <div class="col-12 text-center but-num">
                 <ul>
                     <li class="active" ><i class="fas fa-chevron-right"></i></li>
                     <li>1</li>
                     <li><i class="fas fa-chevron-left"></i></li>
                 </ul>
-            </div>
+            </div> --}}
+
         </div>
     </div>
 </section>

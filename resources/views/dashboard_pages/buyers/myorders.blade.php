@@ -1,6 +1,6 @@
 
 @extends('layouts.dashboard')
-@section('active-mange_requests','active')
+@section('myorders','active')
 
 @section('body')
 

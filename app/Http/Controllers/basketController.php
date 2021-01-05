@@ -45,6 +45,7 @@ class basketController extends Controller
     function show_to_prepare(){
         $user_id = Auth::user()->id;
         $user_ids = DB::table('basket')->where('user_id','=',$user_id)->pluck('user_id');
+        
         //get just subscribet users
         $date_now = '2020-11-27 10:04:36';
         $date_now = carbon::now()->toDateTimeString();

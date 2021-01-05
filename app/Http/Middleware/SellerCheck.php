@@ -22,7 +22,7 @@ class SellerCheck
             //code...
             $account_type = Auth::user()->account_type;
             $view = Auth::user()->view;
-            if ($account_type == 'seller' OR $account_type == 'admin') {
+            if (Auth::check() AND $account_type == 'seller' OR $account_type == 'admin') {
                 return $next($request);
             }
             if ($view != 1 AND $account_type == 'seller' AND $account_type != 'admin') {

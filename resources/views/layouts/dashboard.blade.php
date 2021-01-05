@@ -13,6 +13,7 @@
 	<link rel="stylesheet" type="text/css" href="/css/iziModal.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/iziToast.min.css">
 	<link rel="stylesheet" type="text/css" href="/css/style-control.css">
+	<link rel="stylesheet" type="text/css" href="/css/simplegrid.css">
 	<!-- End import lib -->
 	{{-- token --}}
 	<meta name="csrf-token" content="{{ csrf_token() }}">
@@ -28,7 +29,7 @@
 				</a>
 			</li>
 			<li class="nav-item">
-				<a href="index.html"><img src="/img/logo-2.png" alt="ATPro logo" class="logo logo-light"></a>
+				<a href="/"><img src="/img/logo-2.png" alt="ATPro logo" class="logo logo-light"></a>
 			</li>
 		</ul>
 		<!-- end nav left -->
@@ -96,7 +97,7 @@
 					<img src="{{  Auth::user()->image  }}" alt="User image" class="dropdown-toggle" data-toggle="user-menu">
 					<ul id="user-menu" class="dropdown-menu">
 						<li  class="dropdown-menu-item">
-							<a class="dropdown-menu-link">
+							<a class="dropdown-menu-link" href="/dashboard/profile">
 								<div>
 									<i class="fas fa-user-tie"></i>
 								</div>
@@ -137,12 +138,12 @@
 	<div class="sidebar">
 		<ul class="sidebar-nav">
 			<li class="sidebar-nav-item">
-				<a href="/" class="sidebar-nav-link">
+				<a href="/dashboard" class="sidebar-nav-link">
 					<div>
 						<i class="fas fa-tachometer-alt"></i>
 					</div>
 					<span>
-				الرئيسيه
+						لوحه التحكم
 					</span>
 				</a>
 			</li>
@@ -171,7 +172,7 @@
 			@if (Auth::user()->account_type == 'admin' || Auth::user()->account_type == 'seller')
 				
 			<li class="sidebar-nav-item">
-				<a href="/dashboard/seller/dersses" class="sidebar-nav-link @yield('active-dresses')">
+				<a href="/dashboard/seller/dresses" class="sidebar-nav-link @yield('active-dresses')">
 					<div>
 						<i class="fas fa-female"></i>
 					</div>

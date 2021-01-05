@@ -68,7 +68,7 @@
               
                     <tr>
                         <td>{{ $item->order_id }}</td>
-                        {{-- <td ><img style="height: 100px; width: 90px;" src="{{ $item->image1 }}" alt=""></td> --}}
+                        {{-- <td ><img style="height: 100px; width: 90px;" src="{{ $item }}" alt=""></td> --}}
                         <td>{{ $item->name }}</td>
                         <td>{{ $item->phone }}</td>
                         <td>{{ $item->email }}</td>
@@ -83,11 +83,12 @@
                                     <option value="تم التسليم">تم التسليم</option>
                                 </select>
                                 <input type="hidden" name="order_id" value="{{ $item->order_id }}">
-                                <input type="submit" value="تحديث الحاله">
+                                {{-- <input  value=""> --}}
+                                <button class="btn-base btn-success" type="submit"><i class="fa fa-sync"></i></button>
                             </form>
                         </td>
+                        <td><button class="btn-base btn-danger" id="delete_order" data-order_id="{{ $item->order_id }}">حذف</button></td>
                         <td><i href="#" data-order_id="{{ $item->order_id }}" class="fa fa-eye showOrdersItems"></i></td>
-                        <td><button id="delete_order" data-order_id="{{ $item->order_id }}">حذف</button></td>
                     </tr>
                         
                 @endforeach

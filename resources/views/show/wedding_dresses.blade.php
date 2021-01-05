@@ -21,10 +21,11 @@
                         @foreach ($items as $item)
                         <div class="col-md-4 col-sm-6  col-12">
                             <div class="box">
-                                <button class="addToWishList" data-item_id="{{ $item->id }}">Wish List</button>
                                 <div class='img-me'>
                                     <div class="overlay"></div>
-                                    <a href="/item/{{ $item->id }}"><img src="{{ $item->image1 }}"  alt="gomla-dresses-wideings"></a>                                            <i class="far fa-heart"></i>
+                                    <a href="/item/{{ $item->id }}"><img src="{{ $item->image1 }}"  alt="gomla-dresses-wideings"></a>  
+                                    <button class="addToWishList far fa-heart" data-item_id="{{ $item->id }}"><i class=""></i></button>
+                                    {{-- <i class="far fa-heart"></i>  --}}
                                 </div>
                                 <div class="show-button">
                                     <span class="float-right">${{ $item->price }}</span>
@@ -43,19 +44,9 @@
 
             </div>
 
-            {{-- @if (($items->lastPage()) > 1)
-          <a href="/libs/items/?page={{ $items->currentPage() - 1 }}" style="{{ ($items->currentPage() == 1) ? 'visibility: hidden;' : '' }}" class="btn btn-p">Back</a>
-        @foreach(range(1,$pages) as $num)
-          <a href="/libs/items/?page={{ $num }}" class="btn btn-p">{{$num}}</a>
-        @endforeach
-          <a href="/libs/items/?page={{ $items->currentPage() + 1 }}" style="{{ ($items->currentPage() == $items->lastPage()) ? "visibility: hidden;" : '' }}" class="btn btn-p">Next</a>
-      @endif --}}
-
         </div>
     </div>
 </section>
-{{-- {{ $items->links() }} --}}
-{{-- {{ $items->links('vendor.pagination.default') }} --}}
 {{ $items->links('vendor.pagination.custom') }}
 
 <!--End porducer -->

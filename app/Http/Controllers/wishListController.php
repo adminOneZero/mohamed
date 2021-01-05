@@ -66,7 +66,7 @@ class wishListController extends Controller
         $items = DB::table('Items')
         ->join('wishList', 'Items.id', '=', 'wishList.item_id')
         ->whereIn('wishList.buyer_id',$user_ids)
-        ->get();
+        ->paginate(config('conf.page_items_limit'));
         
         // $items = DB::table('basket')
         // ->join('Items', 'Items.id', '=', 'basket.item_id')
@@ -83,7 +83,7 @@ class wishListController extends Controller
         $buyer_id = Auth::user()->id;
         DB::table('wishList')->where('buyer_id','=',$buyer_id)->delete();
         notify("تم تفريغ قائمه الامنيات","Toast","success");
-        return redirect('/basket');
+        return redirect('/wishlist');
 
     }
 

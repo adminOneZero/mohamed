@@ -39,7 +39,7 @@
                     <div class="sign-up">
                         <form action="/login" method="post">
 
-                            <a href="index.html"><img src="img/logo-2.PNG" alt=""></a>
+                            <a href="index.html"><img src="img/logo-2.png" alt=""></a>
 
                             <h2> تسجيل الدخول <i class="fas fa-user-alt"></i></h2>
 

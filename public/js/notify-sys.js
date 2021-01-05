@@ -69,7 +69,7 @@
          overlay: true,
          displayMode: 'once',
          id: 'question',
-         zindex: 80,
+         zindex: 1000,
          title: 'تاكيد',
          message: MSG,
          position: 'center',

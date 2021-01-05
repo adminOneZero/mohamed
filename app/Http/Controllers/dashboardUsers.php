@@ -24,6 +24,83 @@ class dashboardUsers extends Controller
         //
         // function
     }
+
+    function profile()
+    {
+        return view('profile.profile');
+    }
+    function profile_image(Request $request)
+    {
+        $messsages = array(
+            'image1.min'=>'اسم الصوره صغير للغايه',
+            'image1.mimes'=>'هذا الملف غير مسموح به كصوره',
+            'image1.required'=>'اختر الصوره الشخصيه اولا',
+
+        );
+
+        $validated = $request->validate([
+            'image1' => 'mimes:png,jpg,jpeg|min:1|required',
+            
+        ],$messsages);
+
+
+        $id = Auth::user()->id;
+        // dd($id);
+        $imageName1 = $id."_".time().'A'.\rand(1,2000).'.'.$request->image1->extension();  
+         // save images in desk
+         $request->image1->move(public_path('images/profile'), $imageName1);
+        //  insert 
+        DB::table('users')
+        ->where('id',$id)
+        ->update([
+            'image' => '/images/profile/'.$imageName1,
+        ]);
+
+        return back();
+    }
+    function profile_changepass(Request $request)
+    {
+        notify("تم تغير كلمه المرور بنجاح","Toast","success");
+        return redirect('login');
+        $old_pass = $request->input('old_pass');
+        $new_pass = $request->input('new_pass');
+        $confirm_pass = $request->input('confirm_pass');
+
+        $id = Auth::user()->id;
+
+        // check if old pass is currect
+        $is_user = DB::table('users')
+        ->where('id',$id)
+        ->first();
+
+        if (!Hash::check($old_pass,$is_user->password )) {
+            notify("كلمه المرور القديمه غير متطابقه!!","Toast","danger");
+            return back();
+        }
+
+        if ($new_pass === $confirm_pass) {
+            # code...
+            // check password length
+            if (Str::length($new_pass) < 7) {
+                # code...
+                notify("كلمه المرور الجديده قصيره جدا","Toast","danger");
+                return back();
+        
+            }
+            DB::table('users')
+            ->where('id','=',$id)
+            ->update(['password' => Hash::make($new_pass)]);
+
+            notify("تم تغير كلمه المرور بنجاح","Toast","success");
+            return back('login');
+
+        }else {
+            notify("تاكد من تطابق كلمه المرور الجديده","Toast","danger");
+            return back();
+        }
+
+    }
+
     function get_users()
     {
         // $users = User::paginate(4);
@@ -105,7 +182,7 @@ class dashboardUsers extends Controller
 
     function get_user_info(Request $request,$id){
         // check id 
-        if (!\is_numeric($id) || Str::length($id)) {
+        if (!\is_numeric($id) || Str::length($id) == 0) {
             return response()->json([
                 'message' => 'هنالك خطأ حاول مجدادا',
                 'status' => 'danger',

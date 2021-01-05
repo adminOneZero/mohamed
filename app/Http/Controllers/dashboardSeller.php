@@ -21,7 +21,8 @@ class dashboardSeller extends Controller
 
         // get all user dresses items
         $user_id = Auth::user()->id; // get id to get his items
-        $items = $users = DB::table('Items')->where('seller_id','=',$user_id)->get();
+        $items = $users = DB::table('Items')->where('seller_id','=',$user_id)
+        ->paginate(config('conf.page_items_limit'));
         return view('dashboard_pages.sellers.dresses',['items' => $items]);
     }
 
@@ -40,8 +41,6 @@ class dashboardSeller extends Controller
 
 
     function add_dresses(){ //page
-        // dd(Auth::user()->name);
-
         // get page of adding new items
         return view('dashboard_pages.sellers.new_dresses');
     }
@@ -122,7 +121,7 @@ class dashboardSeller extends Controller
         $items_count = \sizeof($users = DB::table('Items')->where('seller_id','=',$id)->get());
         $subscription_type = Auth::user()->subscription_type;
         
-        // if user is admin allow to add item otherwise check them
+        // if user is admin? allow to add item otherwise check them
         // if user is not admin start checking them and try to stoping them 
         if (!Auth::user()->isAdmin() OR Auth::user()->account_type != 'buyer') {
             // if user not subscribe in plan check if the plan allow hem add more items

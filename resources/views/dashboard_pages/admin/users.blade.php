@@ -4,6 +4,14 @@
     
 @section('body')
     
+<div class="bar">
+    <button id="add_user_btn" class="btn-base btn1"><i class="fa fa-plus"></i></button>
+    <form class="navbar-search" style="display: inline-block; ">
+        <input  id="search_text" type="text" name="Search" class="navbar-search-input" placeholder="ابحث عن المستخدمين">
+        <i id="search_btn" class="fas fa-search"></i>
+    </form>
+
+</div>
 <div class="card max mt-10">
     <div class="card-header">
         <h3>
@@ -11,11 +19,6 @@
         </h3>
         <i class="fas fa-ellipsis-h"></i>
     </div>
-                <form class="navbar-search" style="margin-top:20px; ">
-                    <input id="search_text" type="text" name="Search" class="navbar-search-input" placeholder="ابحث عن المستخدمين">
-                    <i id="search_btn" class="fas fa-search"></i>
-                </form>
-                <button id="add_user_btn">add new user</button>
     <div class="card-content">
         <table>
             <thead>
@@ -69,29 +72,29 @@
         </div>
 
         <fieldset>
-            <legend>Options:</legend>
-            <button id="active_btn" type="button" class="btn btn-success">Activate</button>
-            <button id="deactive_btn" type="button" class="btn btn-success">Deactivate</button>
-            <button id="delete_btn" type="button" class="btn btn-success">Delete</button>
+            <legend>خيارات الحساب :</legend>
+            <button id="active_btn" type="button" class="btn-base btn-success">تنشيط الحساب</button>
+            <button id="deactive_btn" type="button" class="btn-base btn-danger">تغطيل الحساب</button>
+            <button id="delete_btn" type="button" class="btn-base btn-danger">حذف الحساب</button>
         </fieldset>
 
         <fieldset>
-            <legend>Plans:</legend>
-            <button id="sub_btn" type="button" class="btn btn-success">Subscript</button>
+            <legend>تجديد الاشتراك :</legend>
+            <button id="sub_btn" type="button" class="btn-base btn-success">الاشتراك</button>
             <select name="sub_type" id="sub_type">
-                <option value="2">tow</option>
-                <option value="5">five</option>
-                <option value="12">twelve</option>
+                <option value="2">منتجين</option>
+                <option value="5">خمس منتجات</option>
+                <option value="12">احد عشر منتج</option>
             </select>
         </fieldset>
         <fieldset>
-            <legend>change password :</legend>
+            <legend>تغير كلمه المرور :</legend>
             <form action="/dashboard/changepass" method="post">
                 @csrf
-                <input type="password" name="password" placeholder="password">
-                <input type="password" name="password_confirmation" placeholder="password_confirmation">
+                <input type="password" name="password" placeholder="كلمه المرور">
+                <input type="password" name="password_confirmation" placeholder="تاكيد كلمه المرور">
                 <input id="chPassID" type="hidden" name="user_id" >
-                <input type="submit" value="change">
+                <input type="submit" value="تغير" class="btn-base btn-danger">
             </form>
         </fieldset>
     </div>
@@ -156,10 +159,12 @@
                 <div class="form-group">
                   <small class="text-danger"></small>
                 </div>
+<div>
 
-            <select class="" name="cuntry">
-              <option value="مصر">مصر</option>
-            </select>
+    <select class="" name="cuntry">
+        <option value="مصر">مصر</option>
+    </select>
+</div>
 
             <input required class="form-control" name="province" type="text" placeholder="المحافظة">
                 <div class="form-group">

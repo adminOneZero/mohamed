@@ -12,8 +12,9 @@ class publicController extends Controller
     function home(){
         $mostBuyItems_ids = DB::table('most_buy')
         ->orderBy('buy_count','desc')
-        ->limit(2)
+        ->limit(4)
         ->pluck('item_id');
+        
         $mostBuyItems = DB::table('Items')
         ->join('most_buy', 'Items.id', '=', 'most_buy.item_id')
         ->whereIn('most_buy.item_id',$mostBuyItems_ids)

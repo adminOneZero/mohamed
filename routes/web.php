@@ -38,6 +38,9 @@ Route::get('/item/{item_id}', [publicController::class, 'view_item']);
 
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard/profile', [dashboardUsers::class, 'profile']);
+    Route::post('/profile/image', [dashboardUsers::class, 'profile_image']);
+    Route::post('/profile/changepass', [dashboardUsers::class, 'profile_changepass']);
     Route::get('/dashboard/myorders', [buyerController::class, 'requestedItems']);
     Route::get('/dashboard/receivied-orders', [buyerController::class, 'receiviededOders']);
     Route::get('/basket', [basketController::class, 'get_all_in_basket']);
@@ -76,8 +79,9 @@ Route::middleware(['AdminCheck'])->group(function () {
 
 
 Route::middleware(['SellerCheck'])->group(function () {
-    Route::get('/dashboard/seller/dersses', [dashboardSeller::class, 'get_dresses']);
+    Route::get('/dashboard/seller/dresses', [dashboardSeller::class, 'get_dresses']);
     Route::get('/dashboard/seller/add-dersses', [dashboardSeller::class, 'add_dresses']);
+    Route::post('/dashboard/seller/add-dersses', [dashboardSeller::class, 'save_dresses']);
     Route::get('/dashboard/seller/active_item/{item_id}', [dashboardSeller::class, 'activeate_item']);
     Route::get('/dashboard/seller/dactive_item/{item_id}', [dashboardSeller::class, 'dactiveate_item']);
     Route::get('/dashboard/seller/delete_item/{item_id}', [dashboardSeller::class, 'delete_item']);

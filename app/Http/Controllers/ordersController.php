@@ -47,11 +47,14 @@ class ordersController extends Controller
         $new_status = $request->input('new_status');
         $all_status = ['التجهيز','الشحن','تم التسليم'];
         if(!\in_array($new_status,$all_status) AND !\is_numeric($id)){
-            dd('y');
+            // dd('y');
             return back();
         }
-
-        DB::table('orders')->where('order_id','=',$order_id)->update(['status'=>$new_status]);
+        
+        $r = DB::table('orders')
+        ->where('order_id','=',$order_id)
+        ->update(['status'=>$new_status]);
+        // dd($r);
         return back();
 
     }

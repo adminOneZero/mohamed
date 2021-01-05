@@ -51,7 +51,7 @@
                     <div class="sign-up">
                         <form action="/register" method="post">
 
-                            <a href="index.html"><img src="img/logo-2.PNG" alt=""></a>
+                            <a href="index.html"><img src="img/logo-2.png" alt=""></a>
 
                             <h2> انشاء حساب <i class="fas fa-user-alt"></i></h2>
 

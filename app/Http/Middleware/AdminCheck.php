@@ -18,8 +18,8 @@ class AdminCheck
     {
         try {
             //code...
-            $account_type = Auth::user()->account_type;
-            if ($account_type == 'admin') {
+            // $account_type = Auth::user()->account_type;
+            if (Auth::check() && Auth::user()->account_type == 'admin') {
                 return $next($request);
             }
             return back();

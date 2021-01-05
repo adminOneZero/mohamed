@@ -51,8 +51,17 @@
                         <span>|</span>
                         <li><a href="/login">تسجيل الدخول </a></li>
                         @endif
-                        <li><a href="#"><i class="fa fa-search"></i></a></li>
-                        <input type="search" name="#" placeholder="بحث">
+
+                        <form action="/search/" style="display: inline-block">
+                            @csrf
+                            <li class="search">
+                                {{-- <a href="#"><i class="fa fa-search"></i></a> --}}
+                                {{-- <input type="submit" value="search" class="fa fa-search"> --}}
+                                <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
+                                <input type="search" name="#" class="" placeholder="بحث">
+                            </li>
+
+                        </form>
                     </ul>
 
                     <ul class="header-links-one col-lg-4 col-12">

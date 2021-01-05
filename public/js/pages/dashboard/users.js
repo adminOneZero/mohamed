@@ -9,29 +9,37 @@ $(document).ready(function() {
 
         // get user id
         var id = $(this).attr('data-id');
-        console.log(id);
         // set id to user change password
         $('#chPassID').attr('value', id);
         // get user information by id
         $.getJSON("/dashboard/users/info/" + id, function(result) {
+            console.log(typeof result['message']);
+            // console.log(result['message'] == 'undefined');
+            // console.log(result['message'] != 'undefined');
+            if (typeof result['message'] == 'string') {
 
-            $('#modal .info').html(`
-                <fieldset>
-                    <legend>Informations:</legend>
-                        <p><span>name : </span><span>` + result['name'] + `</span></p>
-                        <p><span>email : </span><span di="email">` + result['email'] + `</span></p>
-                        <p><span>phone : </span><span di="phone">` + result['phone'] + `</span></p>
-                        <p><span>province : </span><span di="province">` + result['province'] + `</span></p>
-                        <p><span>addresses : </span><span di="addresses">` + result['addresses'] + `</span></p>
-                        <p><span>image : </span><span di="image">` + result['image'] + `</span></p>
-                        <p><span>account_type : </span><span di="account_type">` + result['account_type'] + `</span></p>
-                        <p><span>account status : </span><span di="account_status">` + result['account_status'] + `</span></p>
-                        <p><span>account plan : </span><span di="account_status">` + result['subscription_type'] + `</span></p>
-                        <p><span>subscription start : </span><span di="account_status">` + result['subscription_in'] + `</span></p>
-                        <p><span>subscription end : </span><span di="account_status">` + result['subscription_out'] + `</span></p>
-                        <input value="` + result['id'] + `" type="hidden" name="id">
-                </fieldset>
-            `);
+                flash(result['message'], result['status']);
+            }
+
+            if (typeof result['message'] == 'undefined') {
+                $('#modal .info').html(`
+                    <fieldset>
+                        <legend>Informations:</legend>
+                            <p><span>الاسم : </span><span>` + result['name'] + `</span></p>
+                            <p><span>الايميل : </span><span di="email">` + result['email'] + `</span></p>
+                            <p><span>الهاتف : </span><span di="phone">` + result['phone'] + `</span></p>
+                            <p><span>المحافظه : </span><span di="province">` + result['province'] + `</span></p>
+                            <p><span>العنوان : </span><span di="addresses">` + result['addresses'] + `</span></p>
+                            <p><span>الصوره : </span><span di="image">` + result['image'] + `</span></p>
+                            <p><span>نوع الحساب : </span><span di="account_type">` + result['account_type'] + `</span></p>
+                            <p><span>حالة الحساب : </span><span di="account_status">` + result['account_status'] + `</span></p>
+                            <p><span>خطة الاشتراك : </span><span di="account_status">` + result['subscription_type'] + `</span></p>
+                            <p><span>بدايه الاشتراك : </span><span di="account_status">` + result['subscription_in'] + `</span></p>
+                            <p><span>نهايه الاشتراك : </span><span di="account_status">` + result['subscription_out'] + `</span></p>
+                            <input value="` + result['id'] + `" type="hidden" name="id">
+                    </fieldset>
+                `);
+            }
         }).fail(function(jqxhr, textStatus, error) {
             flash('حاول مجددا', 'warning');
         });

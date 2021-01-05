@@ -74,6 +74,8 @@
             </tbody>
         </table>
 
+{{ $items->links('vendor.pagination.custom') }}
+
 </div>
 
 
