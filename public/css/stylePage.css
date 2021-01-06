@@ -1234,3 +1234,19 @@ footer h5 {
     background-color: rgba(0, 0, 0, 0);
     border: rgba(0, 0, 0, 0) !important;
 }
+
+.addToWishList:focus {
+    outline: none;
+}
+
+.basketQuantityModal {
+    text-align: center;
+}
+
+.basketQuantityModal p {
+    padding: 10px;
+}
+
+.basketQuantityModal button {
+    padding: 2px 10px 2px 10px;
+}

@@ -148,6 +148,7 @@
         <script src="/js/control.js"></script>
         <script src="/js/notify-sys.js"></script>
         <script src="@yield('js-page')"></script>
+        <script src="@yield('js-page2')"></script>
         <script src="@yield('js-script')"></script>
         @include('vendor.lara-izitoast.toast')
     </body>

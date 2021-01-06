@@ -14,31 +14,20 @@ class basketController extends Controller
     function get_all_in_basket(){
         $current_user_id = Auth::user()->id;
         $user_ids = DB::table('basket')->where('buyer_id','=',$current_user_id)->pluck('seller_id');
-        // dd($user_ids);
-        //get just subscribet users
-        // $date_now = '2020-11-27 10:04:36';
+
         $date_now = carbon::now()->toDateTimeString();
         $user_ids = DB::table('users')
         ->whereDate('subscription_in','<',$date_now)
         ->whereDate('subscription_out','>',$date_now)
         ->whereIn('id',$user_ids)
         ->pluck('id');
-        // ->dump();
-        // dd($user_ids);
         
         $items = DB::table('Items')
         ->join('basket', 'Items.id', '=', 'basket.item_id')
         ->whereIn('basket.seller_id',$user_ids)
         ->get();
         
-        // $items = DB::table('basket')
-        // ->join('Items', 'Items.id', '=', 'basket.item_id')
-        // ->whereIn('Items.user_id',$items_id)
-        // ->get();
-
-        // dd($items);
         return view('basket.basket', ['items' => $items]);
-
     }
 
 
@@ -79,6 +68,7 @@ class basketController extends Controller
         $item_id = $request->input('id');
         $user_id = Auth::user()->id;
         $is_active = Auth::user()->account_active;
+
         // ceck if user account is active or not
         if (!$is_active) {
             return response()->json([
@@ -86,6 +76,7 @@ class basketController extends Controller
                 'status' => 'danger',
             ]);
         }
+
         // validate input
         if (!\is_numeric($item_id)) {
             return response()->json([
@@ -93,6 +84,7 @@ class basketController extends Controller
                 'status' => 'danger',
             ]);
         }
+
         // check if added any item to basket 
         $is_added = DB::table('basket')->where('item_id','=',$item_id)->count();
         if ($is_added >= 1) {
@@ -102,6 +94,7 @@ class basketController extends Controller
                 'status' => 'warning',
                 ]);
             }
+
             // if not added before insert new
             $seller_id = DB::table('Items')->where('id','=',$item_id)->pluck('seller_id');
             // return ($seller_id);
@@ -135,6 +128,7 @@ class basketController extends Controller
         ]);
     }
 
+
     function buy_all(){
 
         $buyer_id = Auth::user()->id;
@@ -166,6 +160,7 @@ class basketController extends Controller
         ->whereDate('subscription_out','>',$date_now)
         ->whereIn('id',$user_ids)
         ->pluck('id');
+
         // get items and join with seller and buyer info
         $items = DB::table('Items')
         ->join('basket', 'Items.id', '=', 'basket.item_id')
@@ -179,8 +174,7 @@ class basketController extends Controller
             'status' => 'تجهيز',
             ]
         );
-        // dd($items[0]->price);
-        // $data = false;
+
         // insert all items with order id
         foreach ($items as $item) {
             # code...
@@ -223,44 +217,33 @@ class basketController extends Controller
             );
         }
         }
-        // dd($order_id);
+
         # clear basket from items
-        // DB::delete('delete basket where buyer_id = ?;', [$buyer_id]);
         DB::table('basket')->where('buyer_id','=',$buyer_id)->delete();
-        // dd($data);
         $this->alert('يتم الان تجهيز طلبك تحت الرقم : '.$order_id,$buyer_id);
 
         notify("تمت عمليه الشراء بنجاح","Toast","success");
         return redirect('/basket');
-        // if ($data == true) {
-        // }
         
         notify("لم يتم ارسال الطلب الرجاء مراسله الاداره","Toast","danger");
         return redirect('/basket');
-        
 
-        // remove all basket items from Basket
-
-        // return back with success message
     }
-
 
     function clearBasket(){
         $buyer_id = Auth::user()->id;
         $is_active = Auth::user()->account_active;
+
         // ceck if user account is active or not
         if (!$is_active) {
             notify('راسل الاداره لتنشيط حسابك',"Toast","danger");
             return redirect('/basket');
         }
+
         DB::table('basket')->where('buyer_id','=',$buyer_id)->delete();
         notify("تم تفريغ السله","Toast","success");
         return redirect('/basket');
 
     }
-
-
-
-
 
 }

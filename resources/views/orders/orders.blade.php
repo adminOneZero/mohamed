@@ -101,7 +101,7 @@
                 <table class="styled-table" dir="rtl">
                     <thead>
                         <tr>
-                            <th>رقم الطلب</th>
+                            <th>الرقم</th>
                             <th>الفستان</th>
                             <th>المبلغ</th>
                             <th>الكميه</th>
