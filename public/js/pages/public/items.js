@@ -3,7 +3,6 @@ jq: $(document).ready(function() {
 
     $(document).on('click', '.addToBasket', function() {
         var id = $(this).attr('data-item_id');
-        console.log(id);
         $.ajax({
             type: "post",
             url: "/basket/add",
@@ -15,7 +14,7 @@ jq: $(document).ready(function() {
             },
             dataType: "json",
             success: function(response) {
-                console.log(response['status']);
+                // console.log(response);
                 flash(response['message'], response['status']);
             },
             error: function(jqXHR, exception) {
@@ -25,6 +24,11 @@ jq: $(document).ready(function() {
                 }
                 if (jqXHR.status === 401) {
                     flash('قم بتسجيل الدخول اولا', 'warning');
+
+                }
+
+                if (jqXHR.status === 403) {
+                    flash('قم بتفعيل الحساب من الايميل', 'warning');
 
                 }
             }
@@ -59,6 +63,11 @@ jq: $(document).ready(function() {
                     flash('قم بتسجيل الدخول اولا', 'warning');
 
                 }
+                if (jqXHR.status === 403) {
+                    flash('قم بتفعيل الحساب من الايميل اولا', 'warning');
+
+                }
+
             }
         });
 

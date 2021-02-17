@@ -46,6 +46,7 @@
         
     </style>
 
+    <h3 style="text-align: center;color:rgb(0, 152, 121);">طلباتي التي قيد الشحن</h3>
 
     <table class="styled-table" dir="rtl">
             <thead>
@@ -84,6 +85,7 @@
                             <th>المبلغ</th>
                             <th>الكميه</th>
                             <th>اللون</th>
+                            <th>الحجم</th>
                             <th>الحاله</th>
                         </tr>
                     </thead>

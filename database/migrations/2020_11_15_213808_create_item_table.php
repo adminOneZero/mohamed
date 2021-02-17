@@ -16,7 +16,7 @@ class CreateItemTable extends Migration
         Schema::create('Items', function (Blueprint $table) {
             $table->id();
             $table->string('price');
-            $table->string('color');
+            $table->string('colors');
             $table->text('description');
             $table->string('image1');
             $table->string('image2');
@@ -24,6 +24,9 @@ class CreateItemTable extends Migration
             $table->boolean('X')->nullable();
             $table->boolean('L')->nullable();
             $table->boolean('XL')->nullable();
+            $table->boolean('M')->nullable();
+            $table->integer('storeQuantity');
+            $table->integer('commission');
             $table->boolean('view');
             $table->string('type');
             $table->timestamps();

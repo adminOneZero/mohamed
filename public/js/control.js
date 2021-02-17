@@ -66,9 +66,9 @@ function openCloseDropdown(event) {
     }
 }
 
-var ctx = document.getElementById('myChart')
-ctx.height = 500
-ctx.width = 500
+var ctx = document.getElementById('myChart');
+ctx.height = 500;
+ctx.width = 500;
 var data = {
     labels: ['January', 'February', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
     datasets: [{

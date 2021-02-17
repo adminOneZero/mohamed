@@ -61,9 +61,23 @@
 
  }
 
- function askUser(MSG, html_id) {
+ function askUser(MSG, html_id, popupType) {
+     var popupColor = 'rgb(243 ,156  ,18,0.8)'
+     if (popupType == 'success') {
+         var popupColor = 'rgb(0, 172, 100)'
+
+     }
+     if (popupType == 'warning') {
+         var popupColor = 'rgb(243 ,156  ,18,0.8)'
+
+     }
+     if (popupType == 'danger') {
+         var popupColor = 'rgb(189, 91, 91)'
+
+     }
+
      iziToast.question({
-         backgroundColor: 'rgb(243 ,156  ,18,0.8)',
+         backgroundColor: popupColor,
          timeout: 20000,
          close: false,
          overlay: true,
@@ -74,7 +88,7 @@
          message: MSG,
          position: 'center',
          buttons: [
-             ['<button id="' + html_id + '"><b>نعم</b></button>', function(instance, toast) {
+             ['<button data-id="" id="' + html_id + '"><b>نعم</b></button>', function(instance, toast) {
 
                  instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
                  return true;
@@ -117,3 +131,13 @@
  //     }
 
  // });
+
+ //  event.preventDefault();
+ //  var q = $(this).attr('data-question');
+ //  $('#q-text').html(q);
+ //  console.log(q);
+ //  // $('#modal').iziModal('setZindex', 99999);
+ //  // $('#modal').iziModal('open', { zindex: 99999 });
+
+ //  $('#messageAlert').iziModal('setTitle', 'سؤال؟');
+ //  $('#messageAlert').iziModal('open');

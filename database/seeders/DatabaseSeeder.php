@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             'cuntry' => 'sudan',
             'province' => 'pro1',
             'address' => 'sudan',
+            'email_verified_at' => '2021-01-13 12:23:37',
             'account_active' => 1,
             'account_type' => 'admin',
             'image' => '/img/user_photo.jpg',
@@ -42,7 +43,7 @@ class DatabaseSeeder extends Seeder
         DB::table('Items')->insert([
             'seller_id'=> "1",
             'price'=> "1000",
-            'color'=> "Red",
+            'colors'=> "Red",
             'description'=> "What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book it has",
             'image1'=> "/images/items/1_1606117526A148.jpeg",
             'image2'=> "/images/items/1_1606117526B1034.jpeg",
@@ -50,14 +51,18 @@ class DatabaseSeeder extends Seeder
             'X'=> "1",
             'L'=> "1",
             'XL'=> "1",
+            'M'=> "1",
+            'commission'=> 300,
             'view'=> "1",
             'type'=> "فساتين زفاف",
+            'storeQuantity' => 0,
+
         ]);
 
         DB::table('Items')->insert([
             'seller_id'=> "1",
             'price'=> "2000",
-            'color'=> "Red",
+            'colors'=> "Red",
             'description'=> "What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book it has",
             'image1'=> "/images/items/1_1606117526B1034.jpeg",
             'image2'=> "/images/items/1_1606117526A148.jpeg",
@@ -65,15 +70,20 @@ class DatabaseSeeder extends Seeder
             'X'=> "1",
             'L'=> "1",
             'XL'=> "1",
+            'M'=> "1",
             'view'=> "1",
+            'commission'=> 300,
+
             'type'=> "فساتين زفاف",
+            'storeQuantity' => 0,
+
         ]);
 
 
         DB::table('Items')->insert([
             'seller_id'=> "1",
             'price'=> "3000",
-            'color'=> "Red",
+            'colors'=> "Red",
             'description'=> "What is Lorem Ipsum Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industry's standard dummy text ever since the 1500s when an unknown printer took a galley of type and scrambled it to make a type specimen book it has",
             'image1'=> "/images/items/1_1606117526C1588.jpeg",
             'image2'=> "/images/items/1_1606117526A148.jpeg",
@@ -81,8 +91,12 @@ class DatabaseSeeder extends Seeder
             'X'=> "1",
             'L'=> "1",
             'XL'=> "1",
+            'M'=> "1",
             'view'=> "1",
+            'commission'=> 200,
             'type'=> "فساتين زفاف",
+            'storeQuantity' => 0,
+
         ]);
     }
 }

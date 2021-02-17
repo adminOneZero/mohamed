@@ -48,7 +48,7 @@
                 <p>${{ $item[0]->price }}</p>
                 <h4>اختر اللون</h4>
                 <select>
-                    <option value="red">احمر</option>
+                    <option value="red">{{ $item[0]->colors }}</option>
                 </select>
                 <h4>اختر الحجم</h4>
                 <select>
@@ -62,6 +62,10 @@
                     @endif
                     @if ($item[0]->XL == 1)
                     <option value="XL">XL</option>
+                    
+                    @endif
+                    @if ($item[0]->M == 1)
+                    <option value="M">M</option>
                     
                     @endif
                     </select>

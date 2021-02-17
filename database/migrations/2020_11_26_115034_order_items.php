@@ -20,7 +20,7 @@ class OrderItems extends Migration
             $table->integer('item_id');
             $table->integer('order_id');
             $table->integer('price');
-            $table->string('color');
+            $table->string('colors');
             $table->text('description');
             $table->string('image1');
             $table->string('image2');
@@ -28,6 +28,9 @@ class OrderItems extends Migration
             $table->boolean('X');
             $table->boolean('L');
             $table->boolean('XL');
+            $table->boolean('M');
+            $table->string('selectedColor')->nullable();
+            $table->string('selectedSize')->nullable();
             $table->string('type');
             $table->string('status');
             // $table->boolean('notify');

@@ -3,9 +3,31 @@
 @section('active-users','active')
     
 @section('body')
+
+@php
+    $notiCount = DB::table('subscriptionRequests')->where('status','=',1)->count();
+    $notiPayCount = DB::table('marketers_payment_requests')->where('status','=',1)->count();
+    
+@endphp
     
 <div class="bar">
     <button id="add_user_btn" class="btn-base btn1"><i class="fa fa-plus"></i></button>
+    <button id="usersPlanBtn" class="btn-base btn-dark">
+        @if ($notiCount > 0)
+        <span id="sub-badge" class="noti-badge">{{ $notiCount }}</span>
+        @endif
+        <i class="fa fa-bell"></i> 
+        طلبات الاشتراك
+    </button>
+
+    <button id="usersPayments" class="btn-base btn-dark">
+        @if ($notiPayCount > 0)
+        <span id="paid-badge" class="noti-badge">{{ $notiPayCount }}</span>
+        @endif
+        <i class="fa fa-bell"></i> 
+        طلبات الدفع
+    </button>
+
     <form class="navbar-search" style="display: inline-block; ">
         <input  id="search_text" type="text" name="Search" class="navbar-search-input" placeholder="ابحث عن المستخدمين">
         <i id="search_btn" class="fas fa-search"></i>
@@ -35,12 +57,17 @@
                 @foreach ($users as $user)
                     <tr>
                         <td>{{ $user->id }}</td>
-                        <td style="flex : 1;"><img class="m-2" style="vertical-align: middle" src="/img/8.webp" alt="" height="30px" width="30px"><span style="vertical-align: middle;margin-right:5px;">{{ $user->name }}</span></td>
+                        <td style="flex : 1;"><img class="m-2" style="vertical-align: middle;border-radius:50%;" src="{{ $user->image }}" alt="" height="30px" width="30px"><span style="vertical-align: middle;margin-right:5px;">{{ $user->name }}</span></td>
                         <td>{{ $user->email }}</td>
                         <td>
                             <span class="dot">
-                                <i class="bg-success"></i>
-                                مكتمل
+                                @if ($user->account_active == 1)
+                                
+                                <span style="color: rgb(23, 255, 23);">نشط</span>
+                                @else
+                                
+                                <span style="color: rgb(255, 255, 255);">خامل</span>
+                                @endif
                             </span>
                         </td>
                         <td>
@@ -54,6 +81,10 @@
 
                             @if ($user->account_type == 'buyer')
                                 مشتري
+                            @endif
+
+                            @if ($user->account_type == 'marketer')
+                                مسوق
                             @endif
                    
                         </td>
@@ -122,8 +153,8 @@
     <div id="newUserModal">
         <form action="/dashboard/add" method="POST">
             @csrf
-            <a href="index.html"><img src="/img/logo-2.PNG" alt=""></a>
-
+            {{-- <a href="index.html"><img src="/img/logo-2.png" alt=""></a> --}}
+            <h3 style="text-align: center">اضف مستخدم جديد</h3>
 
             <div class="my-radio">
                 <input type="radio" required name="account_type" value="buyer" id="radio-cus"><label>مشتري</label>
@@ -181,7 +212,45 @@
     </div>
 
 
-    <div id="modalx" class="iziModal" data-izimodal-group="alerts"></div>
+    {{-- <div id="modalx" class="iziModal" data-izimodal-group="alerts"></div> --}}
+    <div id="usersNeedSubPlan" >
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>اسم المستخدم</th>
+                    <th>الايميل</th>
+                    <th>حاله الحساب</th>
+                    <th>نوع الحساب</th>
+                    <th>عرض</th>
+                </tr>
+            </thead>
+            <tbody id="planInfo">
+                
+            </tbody>
+        </table>       
+    </div>
+
+    <div id="userPaymentRequ" >
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>اسم المستخدم</th>
+                    <th>المبلغ</th>
+                    <th>طريقه الدفع</th>
+                    <th>رقم الهاتف</th>
+                    <th>القبول</th>
+                    <th>عرض</th>
+                </tr>
+            </thead>
+            <tbody id="paymentReqUserInfo">
+                
+            </tbody>
+            <input type="hidden" id="current_id">
+        </table>       
+    </div>
+
 </div>
 
 {{ $users->links() }}

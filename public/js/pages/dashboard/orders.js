@@ -1,5 +1,16 @@
 $(document).ready(function() {
-    $("#orders_modal").iziModal();
+    $("#orders_modal").iziModal({
+        zindex: 103,
+        color: 'rgb(230, 57, 70)',
+        fullscreen: true,
+        loop: false,
+        width: 1000,
+        transitionInOverlay: 'fadeIn',
+        headerColor: 'rgb(35, 47, 62)',
+        background: 'rgb(255, 255, 255,.9)',
+        subtitle: '',
+        headerColor: '#88A0B9',
+    });
     // $("#Modalx").iziModal();
 
     // do action
@@ -23,14 +34,17 @@ $(document).ready(function() {
                 if (response.length > 0) {
                     response.forEach(element => {
                         $('#table_body').append(`
-                        <tr>
-                            <td>` + element['id'] + `</td>
-                            <td ><img style="height: 100px; width: 90px;" src="` + element['image1'] + `" alt=""></td>
-                            <td>$` + element['price'] + `</td>
-                            <td>` + element['quantity'] + `</td>
-                            <td>` + element['color'] + `</td>
-                            <td>` + element['status'] + `</td>
-                        </tr>
+
+                            <tr>
+                                <td>` + element['id'] + `</td>
+                                <td ><img style="height: 100px; width: 90px;" src="` + element['image1'] + `" alt=""></td>
+                                <td>$` + element['price'] + `</td>
+                                <td>` + element['quantity'] + `</td>
+                                <td>` + (element['selectedColor'] == null ? 'غير محدد' : element['selectedColor']) + `</td>
+                                <td>` + (element['selectedSize'] == null ? 'غير محدد' : element['selectedSize']) + `</td>
+                                <td>` + element['status'] + `</td>
+                            </tr>
+
                         `);
 
                     });

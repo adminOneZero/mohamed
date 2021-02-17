@@ -27,8 +27,10 @@ class dashboardUsers extends Controller
 
     function profile()
     {
-        return view('profile.profile');
+        $is_subscribe = Auth::user()->isSubscripted();
+        return view('profile.profile',['is_subscribe'=>$is_subscribe]);
     }
+
     function profile_image(Request $request)
     {
         $messsages = array(
@@ -45,7 +47,6 @@ class dashboardUsers extends Controller
 
 
         $id = Auth::user()->id;
-        // dd($id);
         $imageName1 = $id."_".time().'A'.\rand(1,2000).'.'.$request->image1->extension();  
          // save images in desk
          $request->image1->move(public_path('images/profile'), $imageName1);
@@ -58,6 +59,8 @@ class dashboardUsers extends Controller
 
         return back();
     }
+
+
     function profile_changepass(Request $request)
     {
         notify("تم تغير كلمه المرور بنجاح","Toast","success");
@@ -148,7 +151,6 @@ class dashboardUsers extends Controller
 
         }
         
-        dd($result);
 
     }
 
@@ -214,7 +216,7 @@ class dashboardUsers extends Controller
             "email"	=> $user_data["email"],
             "phone"	=> $user_data["phone"],
             "province"	=> $user_data["province"],
-            "addresses"	=> $user_data["addresses"],
+            "address"	=> $user_data["address"],
             "image"	=> $user_data["image"],
             "account_type"	=> $user_data["account_type"],
             "account_status"	=> ($user_data["account_active"] == 1 ) ? 'مفعل' : 'عاطل',
@@ -232,14 +234,21 @@ class dashboardUsers extends Controller
         // dd($data);
     }
     
-    function alert($message,$user_id) {
+    function alert($message,$user_id,$for_admin = false) {
+        $group = "user";
+        if ($for_admin) {
+            $group = "admin";
+
+        }
         $result = DB::table('Notifications')->insert([
-          'message' => $message,
-          'user_id' => $user_id,
-          'time' => carbon::now()->toDateTimeString(),
-          'status' => 1,
-          ]);
+            'message' => $message,
+            'user_id' => $user_id,
+            'group' => $group,
+            'time' => carbon::now()->toDateTimeString(),
+            'status' => 1,
+            ]);
         return $result;
+        
     }
 
     //active users
@@ -361,15 +370,9 @@ class dashboardUsers extends Controller
             'sub_type' => 'numeric|required|max:1',
         ]);
 
-        // validation error
-        // if ($validator->fails()) {
-        //     return redirect('/dashboard/users')
-        //                 ->withErrors($validator)
-        //                 ->withInput();
-        // }
         $id = $request->input('id');
         $sub_type = $request->input('sub_type');
-        // check is request in plan
+        // check is request one plans
         $isPlan = \in_array($sub_type,[2,5,12]);
 
         if ($isPlan != true) {
@@ -379,22 +382,40 @@ class dashboardUsers extends Controller
                 'status' => 'warning',
             ]);
         }
+
         // set subscription time        
         $current_time = carbon::now();
         $time_now = $current_time->toDateTimeString();
         $expire = $current_time->addMonth(1)->toDateTimeString();
 
         if (User::find($id)->isActive() == 1) {
-            # code...
-            $status = User::where('id',$id)->update(['subscription_in'=>$time_now,'subscription_out'=>$expire,'subscription_type'=>$sub_type]);
+            # check is user request this plan or other
+            $seller_plan_req = DB::table('subscriptionRequests')->where("user_id","=",$id)->first()->subscription_type;
+            if ($sub_type != $seller_plan_req) {
+                # code...
+                return response()->json([
+                    'message' => 'المستخدم لم يطلب هذه الباقه',
+                    'status' => 'danger',
+                ]);
+            }
+            $status = User::where('id',$id)->update(
+                [
+                    'subscription_in'=>$time_now,
+                    'subscription_out'=>$expire,
+                    'subscription_type'=>$sub_type
+               ]
+            );
             if ($status == 1) {
                 # code...
-                // return intval($sub_type) == 2 ? 2 : 'a'+strval(10)+'b';
-                // return $sub_type;
-                    return response()->json([
-                        'message' => (intval($sub_type) == 2) ? 'تم الاشتراك في باقية الصنفين' : 'تم الاشتراك في باقة '.strval($sub_type).' صنف',
-                        'status' => 'success',
-                    ]);
+                // make the user request done as true
+                $items = DB::table('subscriptionRequests')
+                ->where('user_id', $id)
+                ->update(['status' => 0]);
+                
+                return response()->json([
+                    'message' => (intval($sub_type) == 2) ? 'تم الاشتراك في باقية الصنفين' : 'تم الاشتراك في باقة '.strval($sub_type).' صنف',
+                    'status' => 'success',
+                ]);
             }
         }else {
             # code...
@@ -412,4 +433,84 @@ class dashboardUsers extends Controller
                 ->get();
         return $users;
     }
+
+    function planReq(Request $request){
+        $users_ids = DB::table('subscriptionRequests')
+        ->where('status', '=', true)
+        ->pluck('user_id');
+        
+        $users = DB::table('subscriptionRequests')
+        ->join('users', 'subscriptionRequests.user_id', '=', 'users.id')
+        ->whereIn('users.id',$users_ids)
+        ->get();
+
+        return $users;
+    }
+
+    function paymentReq(Request $request){
+        $users_ids = DB::table('marketers_payment_requests')
+        ->where('status', '=', 1)
+        ->pluck('marketer_id');
+
+        $users = DB::table('marketers_payment_requests')
+        ->where('status', '=', 1)
+        ->join('users', 'marketers_payment_requests.marketer_id', '=', 'users.id')
+        ->whereIn('users.id',$users_ids)
+        ->get();
+
+        return $users;
+    }
+    
+    // making user as paid
+    function makePaid(Request $request){
+        $user_id = $request->input('id');
+
+        if (!\is_numeric($user_id )|| Str::length($user_id) > 11) {
+            # code...
+            return response()->json([
+                'message' => 'المعرف غير صحيح',
+                'status' => 'danger',
+            ]);
+        }
+
+        // get commission
+        $userData = DB::table('marketers_payment_requests')
+        ->where('marketer_id', $user_id)
+        ->where('status', 1)
+        ->get();
+
+        if (\count($userData) == 1) {
+            # make marketer paid
+            $status = DB::table('marketers_payment_requests')
+            ->where('marketer_id', $user_id)
+            ->where('status', 1)
+            ->update(['status' => 0]);
+
+            if ($status == 1) {
+                # code...
+                $payStatus = DB::table('marketers_wallet')
+                ->where('marketer_id', $user_id)
+                ->decrement('wallet', ($userData[0]->money));
+                
+                if ($payStatus == 1) {
+                    # code...
+                    $this->alert("تم تحويل اليك مبلغ قدره ".$userData[0]->money,$user_id);
+                    return response()->json([
+                        'message' => 'تم الدفع',
+                        'status' => 'success',
+                    ]);
+                }
+            }
+        }
+        
+        return response()->json([
+            'message' => 'فشلت العمليه',
+            'status' => 'danger',
+        ]);
+    
+    }
+
+
 }
+
+

@@ -20,20 +20,25 @@ class SellerCheck
     {
         try {
             //code...
-            $account_type = Auth::user()->account_type;
-            $view = Auth::user()->view;
-            if (Auth::check() AND $account_type == 'seller' OR $account_type == 'admin') {
-                return $next($request);
-            }
-            if ($view != 1 AND $account_type == 'seller' AND $account_type != 'admin') {
+            if (Auth::check()) {
                 # code...
-                notify("هذا الحساب غير نشط","Toast","danger");
-
+                $account_type = Auth::user()->account_type;
+                $view = Auth::user()->view;
+                if (Auth::check() AND $account_type == 'seller' OR $account_type == 'admin') {
+                    return $next($request);
+                }
+                if ($view != 1 AND $account_type == 'seller' AND $account_type != 'admin') {
+                    # code...
+                    notify("هذا الحساب غير نشط","Toast","danger");
+                    
+                }
+                return redirect('/dashboard');
+            }else{
+                return redirect('/login');
             }
-            return redirect('/dashboard');
         } catch (\Throwable $th) {
             //throw $th;
-            redirect('/login');
+            return redirect('/login');
         }
     }
 }

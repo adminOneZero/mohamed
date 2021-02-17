@@ -58,13 +58,14 @@
                   <span>|</span>
                   <li><a href="/login">تسجيل الدخول </a></li>
                   @endif
-                  {{-- <li><a href="#"><i class="fa fa-search"></i></a></li> --}}
                   
                   <form action="/search/" style="display: inline-block" >
+                    <input id="search_box" type="hidden" name="section" value="">
+
                   <li class="search">
                         @csrf
                         <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
-                        <input type="search" name="#" class="" placeholder="بحث">
+                        <input type="search" name="search_text" class="" placeholder="بحث">
                     </li>
                 </form>
             </ul>
@@ -136,7 +137,10 @@
 
 <!--End NavBar right-->
 
-
+<div id="messageAlert">
+    <div id="q-text"></div>
+    <button data-izimodal-close="" data-izimodal-transitionout="bounceOutDown">Close</button>
+</div>
 
         @yield('body')
 
@@ -147,6 +151,7 @@
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/control.js"></script>
         <script src="/js/notify-sys.js"></script>
+        <script src="/js/public.js"></script>
         <script src="@yield('js-page')"></script>
         <script src="@yield('js-page2')"></script>
         <script src="@yield('js-script')"></script>

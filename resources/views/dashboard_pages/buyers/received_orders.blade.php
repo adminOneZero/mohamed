@@ -49,36 +49,64 @@
     
     </style>
     
-        <table class="styled-table">
+    <h3 style="text-align: center;color:rgb(0, 152, 121);">طلباتي المستلمه</h3>
+
+        <table class="styled-table" dir="rtl">
             <thead>
                 <tr>
-                    <th>الفستان</th>
-                    <th>المبلغ</th>
-                    <th>الكميه</th>
-                    <th>اللون</th>
+                    <th>رقم الطلب</th>
+                    <th>ايميلي</th>
+                    <th>عنواني</th>
                     <th>الحاله</th>
+                    <th>عرض</th>
                 </tr>
             </thead>
+
             <tbody>
+
                 @foreach ($items as $item)
-                <tr>
-                    <td ><img style="height: 100px; width: 90px;" src="{{ $item->image1 }}" alt=""></td>
-                    <td>${{ $item->price }}</td>
-                    <td>{{ $item->quantity }}</td>
-                    <td>{{ $item->color }}</td>
-                    <td>{{ $item->status }}</td>
-                </tr>
-                    
+              
+                    <tr>
+                        <td>{{ $item->order_id }}</td>
+                        <td>{{ $item->email }}</td>
+                        <td>{{ $item->address }}</td>
+                        <td>{{ $item->status }}</td>
+                        <td><i href="#" data-order_id="{{ $item->order_id }}" class="fa fa-eye showOrdersItems"></i></td>
+                    </tr>
+                        
                 @endforeach
                 <!-- and so on... -->
             </tbody>
         </table>
+
+            <dir id="orders_modal">
+                <table class="styled-table" dir="rtl">
+                    <thead>
+                        <tr>
+                            <th>رقم الطلب</th>
+                            <th>الفستان</th>
+                            <th>المبلغ</th>
+                            <th>الكميه</th>
+                            <th>اللون</th>
+                            <th>الحجم</th>
+                            <th>الحاله</th>
+                        </tr>
+                    </thead>
+        
+                    <tbody id="table_body">
+                       
+                        <!-- and so on... -->
+                    </tbody>
+                </table>
+
+            </dir>
 
 {{ $items->links('vendor.pagination.custom') }}
 
 </div>
 
 
-@section('js-page','/js/pages/dashboard/users.js')
+{{-- @section('js-page','/js/pages/dashboard/users.js') --}}
+@section('js-page','/js/pages/dashboard/orders.js')
 
 @endsection

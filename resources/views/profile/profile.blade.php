@@ -30,7 +30,29 @@
                                 @csrf
     
                             </form>
-                            
+
+
+                            <div class="">
+
+                                @if (Auth::user()->account_type == 'seller')
+                                    <h3>الباقه الاشتراكيه</h3>
+                                    @if (Auth::user()->subscription_in != null)
+                                        <p>  <span>تاريخ الاشتراك : </span></span> <span dir="ltr">{{ Auth::user()->subscription_in  }}</span> </p>
+                                        <p>  <span>تاريخ الانتهاء : </span></span> <span dir="ltr">{{ Auth::user()->subscription_out }}</span> </p>
+                                    @endif
+                                    <p>
+                                        <span>حاله الاشتراك : </span>
+                                        @if ($is_subscribe)
+                                            <strong style="color: green;font-size:30px;">مشترك</strong>
+                                        @else
+                                            <strong style="color: red;font-size:30px;">غير مشترك</strong>
+                                        @endif
+                                    </p>
+                                    <p><a href="/subscription">الباقات</a></p>
+                                @endif
+
+                            </div>
+
                         </div>
                     </div>
                 </div>

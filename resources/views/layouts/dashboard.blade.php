@@ -40,13 +40,25 @@
 			<i class="fas fa-search"></i> --}}
 		</form>
 		<!-- end form -->
+		@php
+			$adminNotiCount = DB::table('Notifications')->where('group','=',"admin")->where('status','=','1')->count();
+			// dd($adminNotiCount);
+		@endphp
 		<!-- nav right -->
 		<ul class="navbar-nav nav-right">
 			<li class="nav-item dropdown" >
 				<a class="nav-link">
 					<i class="fas fa-bell dropdown-toggle" data-toggle="notification-menu"></i>
-					@if (DB::table('Notifications')->where('status','=','1')->where('user_id','=',Auth::user()->id)->count() > 0)
-					<span id="notiAlert" class="navbar-badge">{{ DB::table('Notifications')->where('status','=','1')->where('user_id','=',Auth::user()->id)->count() }}</span>
+					@if (Auth::user()->account_type == "admin")
+						@if ($adminNotiCount > 0)
+						<span id="notiAlert" class="navbar-badge">{{ $adminNotiCount }}</span>
+						@endif
+						
+					@else
+						@if (DB::table('Notifications')->where('group','!=',"admin")->where('status','=','1')->where('user_id','=',Auth::user()->id)->count() > 0)
+						<span id="notiAlert" class="navbar-badge">{{ DB::table('Notifications')->where('group','!=',"admin")->where('status','=','1')->where('user_id','=',Auth::user()->id)->count() }}</span>
+						@endif
+					
 						
 					@endif
 				</a>
@@ -62,7 +74,29 @@
 								background-color: aqua;
 							}
 						</style>
-						@foreach (DB::table('Notifications')->where('user_id','=',Auth::user()->id)->orderBy('id', 'desc')->limit(100)->get() as $noti)
+@if (Auth::user()->account_type == "admin")
+	
+@foreach (DB::table('Notifications')->where('group','=',Auth::user()->account_type)->orderBy('id', 'desc')->limit(100)->get() as $noti)
+							
+<li data-noti_id="{{ $noti->id }}" class="dropdown-menu-item seeStatus @if ($noti->status == 1) {{ 'active' }} @else {{ '' }} @endif">
+	<a href="#" class="dropdown-menu-link">
+		<div>
+			<i class="fas fa-gift"></i>
+		</div>
+		<span>
+			{{ $noti->message }}
+			<br>
+			<span>
+				{{ $noti->time }}
+			</span>
+		</span>
+	</a>
+</li>
+@endforeach
+@endif
+
+
+						@foreach (DB::table('Notifications')->where('user_id','=',Auth::user()->id)->where('group','!=',"admin")->orderBy('id', 'desc')->limit(100)->get() as $noti)
 							
 						<li data-noti_id="{{ $noti->id }}" class="dropdown-menu-item seeStatus @if ($noti->status == 1) {{ 'active' }} @else {{ '' }} @endif">
 							<a href="#" class="dropdown-menu-link">
@@ -84,7 +118,7 @@
 					<div class="dropdown-menu-footer">
 						<form action="/dashboard/clearnoti" method="post">
 							@csrf
-							<input type="submit" value="الكل كمقروء">
+							<input type="submit" class="btn-base btn1" value="الكل كمقروء">
 						</form>
 						{{-- <span>
 							عرض كل الاشعارات
@@ -138,7 +172,7 @@
 	<div class="sidebar">
 		<ul class="sidebar-nav">
 			<li class="sidebar-nav-item">
-				<a href="/dashboard" class="sidebar-nav-link">
+				<a href="/dashboard" class="sidebar-nav-link @yield('dashboard-reports')">
 					<div>
 						<i class="fas fa-tachometer-alt"></i>
 					</div>
@@ -182,7 +216,7 @@
 			@endif
 			
 			<li  class="sidebar-nav-item">
-				<a href="/dashboard/myorders" class="sidebar-nav-link @yield('active-requests')">
+				<a href="/dashboard/myorders" class="sidebar-nav-link @yield('myorders')">
 					<div>
 						<i class="fas fa-shopping-cart"></i>
 					</div>
@@ -198,8 +232,30 @@
 					<span> تم الشراء </span>
 				</a>
 			</li>
+			@if (Auth::user()->account_type == 'seller')
+			<li  class="sidebar-nav-item">
+				<a href="/subscription" class="sidebar-nav-link @yield('subscription')">
+					<div>
+						<i class="fas fa-file-signature"></i>
+					</div>
+					<span> الباقه الشهريه </span>
+				</a>
+			</li>
+				
+			@endif
 
-			
+			@if (Auth::user()->account_type == 'marketer')
+			<li  class="sidebar-nav-item">
+				<a href="/payments" class="sidebar-nav-link @yield('payments')">
+					<div>
+						<i class="fas fa-dollar-sign"></i>
+					</div>
+					<span> الدفعات الماليه </span>
+				</a>
+			</li>
+				
+			@endif
+
 		</ul>
 	</div>
 	<!-- end sidebar -->

@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Str;
-// use Carbon\Carbon;
+use Carbon\Carbon;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -13,6 +13,24 @@ use Illuminate\Http\Request;
 class dashboardSeller extends Controller
 {
     //
+    function alert($message,$user_id,$for_admin = false) {
+        $group = "user";
+        if ($for_admin) {
+            $group = "admin";
+
+        }
+        // dd($group);
+        $result = DB::table('Notifications')->insert([
+            'message' => $message,
+            'user_id' => $user_id,
+            'group' => $group,
+            'time' => carbon::now()->toDateTimeString(),
+            'status' => 1,
+            ]);
+        return $result;
+        
+    }
+
     function get_dresses(){
         // if user not subscrive dactive all items auto
         if (Auth::user()->subscription_in != null) {
@@ -21,8 +39,11 @@ class dashboardSeller extends Controller
 
         // get all user dresses items
         $user_id = Auth::user()->id; // get id to get his items
-        $items = $users = DB::table('Items')->where('seller_id','=',$user_id)
+        
+        $items = $users = DB::table('Items')
+        ->where('seller_id','=',$user_id)
         ->paginate(config('conf.page_items_limit'));
+
         return view('dashboard_pages.sellers.dresses',['items' => $items]);
     }
 
@@ -35,7 +56,6 @@ class dashboardSeller extends Controller
         ->where('id','=',$item_id)
         ->where('seller_id','=',$user_id)
         ->get();
-        // dd($item[0]);
         return view('dashboard_pages.sellers.view_item',['item' => $item[0]]);
     }
 
@@ -46,10 +66,10 @@ class dashboardSeller extends Controller
     }
 
     function save_dresses(Request $request){
-        
+
         $messsages = array(
             'image1.max'=>'اسم الصوره طويل جدا',
-            'image1.min'=>'اسم الصوره صغير للغايه',
+            'image1.min'=>'اسم الصوره قصير للغايه',
             'image1.mimes'=>'هذا الملف غير مسموح به كصوره',
             'image1.required'=>'ارفع 3 صور مطلوب',
 
@@ -67,6 +87,11 @@ class dashboardSeller extends Controller
             'price.min'=>'ثمن الفستان قليل للغايه',
             'price.max'=>'ثمن الفستان مرتفع للغايه',
             'price.numeric'=>'اعد كتابه الثمن',
+            
+            'commission.required'=>'تمن العموله مطلوب',
+            'commission.min'=>'ثمن العموله قليل للغايه',
+            'commission.max'=>'ثمن العموله مرتفع للغايه',
+            'commission.numeric'=>'اعد كتابه العموله',
 
             'color.required'=>'لون الفستان مطلوب',
             'color.min'=>'احرف لون الفستان قليل للغايه',
@@ -95,6 +120,7 @@ class dashboardSeller extends Controller
             'image3' => 'mimes:png,jpg,jpeg|min:1|required',
             'price' => 'numeric|max:10000000|min:2|required',
             'color' => 'alpha|max:60|min:2|required',
+            'commission' => 'numeric|max:10000000|min:2|required',
             'description' => 'string|min:60|max:1000|required',
             'X' => 'alpha|max:1',
             'L' => 'alpha|max:1',
@@ -127,16 +153,17 @@ class dashboardSeller extends Controller
             // if user not subscribe in plan check if the plan allow hem add more items
             if ($items_count >= $subscription_type AND Auth::user()->account_type != 'admin') {
                 notify("انت غير مشترك باي باقه","Toast","danger");
-                return back();
+                return redirect('/subscription');
             }
         }
-
         // get all inputs to insert them into db
         $size_x = $request->input('X') == 'X' ? true : false;
         $size_l = $request->input('L') == 'L' ? true : false;
         $size_xl = $request->input('XL') == 'XL' ? true : false;
+        $size_m = $request->input('M') == 'M' ? true : false;
         $price = $request->input('price');
         $color = $request->input('color');
+        $commission = $request->input('commission');
         $description = $request->input('description');
         $files = $request->file();
         $type = $request->input('type');
@@ -159,7 +186,9 @@ class dashboardSeller extends Controller
         DB::table('Items')->insert([
             [
             'price' => $price,
+            // 'color' => \str_replace(" ","",$color),
             'color' => $color,
+            'commission'=> $commission,
             'description' => $description,
             'seller_id' => Auth::user()->id,
             'image1' => '/images/items/'.$imageName1,
@@ -168,8 +197,10 @@ class dashboardSeller extends Controller
             'X' => $size_x,
             'L' => $size_l,
             'XL' => $size_xl,
+            'M' => $size_m,
             'view' => false,
             'type' => $type,
+            'storeQuantity' => 0,
             // 'date_expire' => $date_expire,
 
             ]
@@ -276,6 +307,28 @@ class dashboardSeller extends Controller
         return view('dashboard_pages.sellers.active_dresses',['items' => $items]);
     }
 
+    function almost_done_items(){
+        // get all almost_done_items items in store
+        $user_id = Auth::user()->id;
+        $items = DB::table('Items')
+        ->where('seller_id','=',$user_id)
+        ->where('storeQuantity','<=',config('conf.almost_done_items'))
+        ->get();
+
+        return view('dashboard_pages.sellers.almost_done_items',['items' => $items]);
+    }
+
+    function done_items(){
+        // get all done items in store
+        $user_id = Auth::user()->id;
+        $items = DB::table('Items')
+        ->where('seller_id','=',$user_id)
+        ->where('storeQuantity','<=',0)
+        ->get();
+
+        return view('dashboard_pages.sellers.done_items',['items' => $items]);
+    }
+
 
     // function dalete_item(){
     //     // get all dactivate items 
@@ -284,4 +337,147 @@ class dashboardSeller extends Controller
 
     //     return view('dashboard_pages.sellers.active_dresses',['items' => $items]);
     // }
+    
+    function plan(Request $request){
+        // get all dactivate items 
+        $all_plan = [2,5,12];
+        $plan = $request->input('plan');
+
+        // is this user is seeler or admin allow him to execute this code
+        if (Auth::user()->account_type == "admin" || Auth::user()->account_type == "seller") {
+            # code...
+            
+            // is plan exists
+            if (\in_array($plan,$all_plan)) {
+
+                $user_id = Auth::user()->id;
+                $current_sub = Auth::user()->subscription_type;
+                if (Auth::user()->isSubscripted() && $current_sub == $plan) {
+                    # code...
+                    notify("انت مشترك مسبقا في هذه الباقه","Toast","warning");
+                    return back();
+                }
+                elseif (Auth::user()->isSubscripted() && $plan < $current_sub) {
+                    # code...
+                    notify("لايمكنك الانتقال لباقه اقل","Toast","warning");
+                    return back();
+                } 
+                
+                $items = DB::table('subscriptionRequests')
+                ->updateOrInsert([
+                    'user_id' => $user_id,                
+                ],
+                ['subscription_type'=>$plan,
+                'time'=> Carbon::now()->toDateTimeString(),
+                'status' => 1,
+                ]);
+                $name = Auth::user()->name;
+                // dd($user_id);
+                notify("تم ارسال طلب الاشتراك بنجاح","Toast","success");
+                $this->alert("طلب المستخدم $name تفعيل الخطه الشهريه",$user_id ,true);
+                // $this->alert("طلب تفعيل باقه حساب المستخدم $name",'admin');
+                return back();
+                
+            } else {
+                notify("انت تختبر هذا النظام","Toast","danger");
+                return back();
+            }
+            
+            
+        } else {
+            # code...
+            notify("هذه الخطط للبائعين فقط","Toast","danger");
+            return back();
+        }
+        return redirect('/subscription');
+    }
+
+    function api_getItemQuan(Request $request)
+    {
+        # code...
+        $item_id = $request->input('item_id');
+        $itemQuantity = DB::table('Items')
+        ->where('id','=',$item_id)
+        ->pluck('storeQuantity')
+        ->first();
+
+        return $itemQuantity;
+    }
+
+
+    function api_increaseItemQuan(Request $request)
+    {
+        $item_id = $request->input('item_id');
+        $newQuanValue = $request->input('newQuanValue');
+        // return \is_numeric($item_id);
+        if (
+            !\is_numeric($item_id) ||
+            !\is_numeric($newQuanValue) || 
+            $item_id == '' ||
+            $newQuanValue == '' ||
+            $item_id < 0 ||
+            $newQuanValue < 0
+        ) {
+            # code...
+            return response()->json([
+                'message' => 'خطأ في الارقام المدخله',
+                'status' => 'danger',
+            ]);
+        }
+
+        $itemQuantity = DB::table('Items')
+        ->where('id','=',$item_id)
+        ->increment('storeQuantity', $newQuanValue);
+
+        $itemQuantity = DB::table('Items')
+        ->where('id','=',$item_id)
+        ->pluck('storeQuantity')
+        ->first();
+
+        return response()->json([
+            'message' => 'تم اضافه الكميه بنجاح',
+            'status' => 'success',
+            'value' => $itemQuantity
+        ]);
+    }
+
+    function api_decreaseItemQuan(Request $request)
+    {
+        $item_id = $request->input('item_id');
+        $newQuanValue = $request->input('newQuanValue');
+        
+        if (
+            !\is_numeric($item_id) ||
+            !\is_numeric($newQuanValue) || 
+            $item_id == '' ||
+            $newQuanValue == '' ||
+            $item_id < 0 ||
+            $newQuanValue < 0
+        ) {
+            # code...
+            return response()->json([
+                'message' => 'خطأ في الارقام المدخله',
+                'status' => 'danger',
+            ]);
+        }
+
+        $itemQuantity = DB::table('Items')
+        ->where('id','=',$item_id)
+        ->decrement('quantity', $newQuanValue);
+
+
+        $itemQuantity = DB::table('Items')
+        ->where('id','=',$item_id)
+        ->pluck('quantity')
+        ->first();
+
+        return response()->json([
+            'message' => 'تم سحب الكميه بنجاح',
+            'status' => 'success',
+            'value' => $itemQuantity
+        ]);
+        
+    }
+
+
 }

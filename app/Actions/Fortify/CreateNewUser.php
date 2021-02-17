@@ -17,22 +17,74 @@ class CreateNewUser implements CreatesNewUsers
      * @param  array  $input
      * @return \App\Models\User
      */
-    public function create(array $input)
+
+    function alert($message,$user_id) {
+      $result = DB::table('Notifications')->insert([
+        'message' => $message,
+        'user_id' => $user_id,
+        'time' => carbon::now()->toDateTimeString(),
+        'status' => 1,
+        ]);
+      return $result;
+  }
+
+  public function create(array $input)
     {
-      // 'province' => $input['province'],
-      // dd($input['province']);
+
+      $customMessages = [
+        'name.max'=>'الاسم طويل جدا',
+        'name.min'=>'الاسم قصير للغايه',
+        'name.required'=>'الرجاء ادخال الاسم',
+
+        'email.max'=>'الايميل طويل جدا',
+        'email.min'=>'الايميل قصير للغايه',
+        'email.required'=>'الرجاء ادخال الايميل',
+        'email.unique'=>'هذا الايميل مستخدم مسبقا',
+
+        'password.max'=>'كلمه المرور طويل جدا',
+        'password.min'=>'كلمه المرور قصير يجب ان لا تقل عن 8 احرف',
+        'password.required'=>'الرجاء ادخال كلمه المرور',
+        'password.string'=>'الرجاء ادخال كلمه المرور حروف وارقام',
+        'password.confirmed'=>'الرجاء تاكيد كلمه المرور',
+
+        'account_type.max'=>'حدد نوع الحساب',
+        'account_type.min'=>'حدد نوع الحساب',
+        'account_type.required'=>'حدد نوع الحساب',
+        'account_type.string'=>'حدد نوع الحساب',
+
+        'phone.max'=>'رقم الهاتف طويل جدا',
+        'phone.min'=>'رقم الهاتف قصير جدا',
+        'phone.required'=>'الرجاء ادخال رقم الهاتف',
+
+        'cuntry.max'=>'اختر الدوله',
+        'cuntry.min'=>'اختر الدوله',
+        'cuntry.required'=>'اختر الدوله',
+        'cuntry.string'=>'اختر الدوله',
+        
+
+        'province.max'=>'عنوان المحافظه او الولايه طويل جدا',
+        'province.min'=>'عنوان المحافظه او الولايه قصير للغايه',
+        'province.required'=>'الرجاء ادخال عنوان المحافظه او الولايه',
+
+        'address.max'=>'العنوان طويل جدا',
+        'address.min'=>'العنوان قصير للغايه',
+        'address.required'=>'الرجاء ادخال العنوان',
+        
+      ];
+
       Validator::make($input, [
         'name' => ['required', 'string','min:6', 'max:255'],
         'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-        'password' => $this->passwordRules(),
         'password' => [
           'string',
-          'min:5',
-          'max:150',
+          'min:8',
+          'max:250',
+          'required',
+          'confirmed'
         ],
         'account_type'=> [
           'string',
-          'max:6',
+          'max:8',
           'required',
         ],
         'phone' => [
@@ -50,7 +102,7 @@ class CreateNewUser implements CreatesNewUsers
           'required',
         ],
         'address'=>[
-          // 'String',
+          'String',
           'max:50',
           'required',
         ],
@@ -58,37 +110,40 @@ class CreateNewUser implements CreatesNewUsers
           'String',
           'max:5',
         ],
-        ])->validate();
+      ],$messages = $customMessages)->validate();
         
-        // $a = carbon::now();
-        // $b = $a->addDay();
-        // dd($a->toDateTimeString());
         $account_type = $input['account_type'];
-        
+
         if ($account_type == 'seller') {
-          # code...
           $account_type = 'seller';
+        }elseif ($account_type == 'distributor') {
+          $account_type = 'distributor';
+          
         }elseif ($account_type == 'buyer') {
-          # code...
           $account_type = 'buyer';
+
+        }elseif ($account_type == 'marketer') {
+          $account_type = 'marketer';
+
         } else {
-          # code...
           return redirect('/login');
         }
-        // dd("Hi");
         
-        return User::create([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'password' => Hash::make($input['password']),
-            'phone' => $input['phone'],
-            'cuntry' => $input['cuntry'],
-            'province' => $input['province'],
-            'address' => $input['address'],
-            'account_type' => $account_type,
-            'account_active' => false,
-            'image' => '/img/user_photo.jpg',
-            'subscription_type' => 0 ,
-        ]);
+        $result = User::create([
+          'name' => $input['name'],
+          'email' => $input['email'],
+          'password' => Hash::make($input['password']),
+          'phone' => $input['phone'],
+          'cuntry' => $input['cuntry'],
+          'province' => $input['province'],
+          'address' => $input['address'],
+          'account_type' => $account_type,
+          'account_active' => false,
+          'image' => '/img/user_photo.jpg',
+          'subscription_type' => 0 ,
+          ]);
+          
+          return $result; 
+
     }
 }

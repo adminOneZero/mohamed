@@ -16,6 +16,7 @@
 
             <!-- Bootstrap -->
             <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+            <link rel="stylesheet" type="text/css" href="/css/iziToast.min.css">
 
             <!-- normalize -->
             <link type="text/css" rel="stylesheet" href="css/normalize.css"/>
@@ -54,11 +55,12 @@
 
                         <form action="/search/" style="display: inline-block">
                             @csrf
+                            <input id="search_box" type="hidden" name="section" value="all">
                             <li class="search">
                                 {{-- <a href="#"><i class="fa fa-search"></i></a> --}}
                                 {{-- <input type="submit" value="search" class="fa fa-search"> --}}
                                 <button type="submit" class="search-btn"><i class="fa fa-search"></i></button>
-                                <input type="search" name="#" class="" placeholder="بحث">
+                                <input type="search" name="search_text" class="" placeholder="بحث">
                             </li>
 
                         </form>
@@ -274,8 +276,10 @@
                 <div class="row">
                     <div class=" col-lg-3 col-sm-6 col-xs-12 box">
                         <h2>الخدمات</h2>
-                        <a href="register.html"><p>تسجيل دخول</p></a>
-                        <a href="#"><p>بطاقة الا</p></a>
+                        <a href="/subscription"><p>الباقات</p></a>
+                        @if (!Auth::check())
+                        <a href="/affiliate-program"><p> برنامج التسوق </p></a>
+                        @endif
                         <a href="#"><p>مشترياتي</p></a>
                         <a href="#"><p>مصار مشتر</p></a>
                     </div>
@@ -309,7 +313,7 @@
             </div>
         </section>
         <!--End section-six-->
-        <div class="but-scroll"><i class="fas fa-cloud-upload-alt fa-4x"></i></div>
+        <div class="but-scroll"><i class="fas fa-arrow-alt-circle-up fa-4x"></i></div>
         <!--Start footer-->
         <footer class="text-center">
             <div class="container">
@@ -322,5 +326,9 @@
         <script src="js/jQuery-min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/script.js"></script>
+        <script src="/js/iziToast.js"></script>
+        <script src="/js/notify-sys.js"></script>
+        @include('vendor.lara-izitoast.toast')
+
     </body>
 </html>

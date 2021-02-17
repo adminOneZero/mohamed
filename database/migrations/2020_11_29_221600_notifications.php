@@ -19,6 +19,7 @@ class Notifications extends Migration
             $table->string('message');
             $table->string('user_id');
             $table->boolean('status');
+            $table->string('group');
             $table->string('time');
         });
     }

@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;
@@ -148,16 +148,19 @@ class User extends Authenticatable
             # code...
             return true;
         } else {
-            # code...
-            $sub_start = carbon::createFromFormat('Y-m-d H:i:s',$this->subscription_in) ;
-            $sub_end = carbon::createFromFormat('Y-m-d H:i:s',$this->subscription_out);
-            $status = $sub_end->gt($sub_start);
-    
-            if ($status) {
-                return true;
-            }else {
-                return false;
+
+            if ($this->subscription_out != null) {
+                # code...
+                // $sub_start = carbon::createFromFormat('Y-m-d H:i:s',$this->subscription_in) ;
+                $sub_end = carbon::createFromFormat('Y-m-d H:i:s',$this->subscription_out);
+                $now = carbon::now();
+                $status = $sub_end->gt($now);
+                if ($status) {
+                    return true;
+                }
             }
+            return false;
+    
         }
         
     }

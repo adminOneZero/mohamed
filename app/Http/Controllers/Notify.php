@@ -4,13 +4,21 @@ use Carbon\Carbon;
 
 
 class Notify {
-  public function alert($message.$user_id) {
-      $result = DB::table('Notifications')->insert([
-        'message' => $message,
-        'user_id' => $user_id,
-        'time' => carbon::now()->toDateTimeString(),
-        'status' => 1,
-        ]);
-      return $result;
-  }
+  function alert($message,$user_id,$for_admin = false) {
+        $group = "user";
+        if ($for_admin) {
+            $group = "admin";
+
+        }
+        // dd($group);
+        $result = DB::table('Notifications')->insert([
+            'message' => $message,
+            'user_id' => $user_id,
+            'group' => $group,
+            'time' => carbon::now()->toDateTimeString(),
+            'status' => 1,
+            ]);
+        return $result;
+        
+    }
 }

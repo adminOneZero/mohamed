@@ -25,11 +25,21 @@
                                     <div class="overlay"></div>
                                     <a href="/item/{{ $item->id }}"><img src="{{ $item->image1 }}"  alt="gomla-dresses-wideings"></a>  
                                     <button class="addToWishList far fa-heart" data-item_id="{{ $item->id }}"><i class=""></i></button>
-                                    {{-- <i class="far fa-heart"></i>  --}}
                                 </div>
+                                
+
                                 <div class="show-button">
-                                    <span class="float-right">${{ $item->price }}</span>
-                                    <button data-item_id="{{ $item->id }}" class="float-lift addToBasket" type="button"><i class="fas fa-cart-arrow-down"></i>الى السله </button>
+                                    <div class="row">
+                                        <div class="col-6 text-right">
+                                            <h3><span>السعر : </span> 1000$</h3>
+                                            <h3><span>العموله : </span> 300$ </h3>
+                                        </div>
+                                        <div class="col-6">
+                                            <button data-item_id="1" class="addToBasket mt-1" type="button">
+                                                <i class="fas fa-cart-arrow-down"></i>الى السله 
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -103,6 +113,12 @@
 </footer>
 <!--End footer-->
 
+<script>
+    window.addEventListener('load', (event) => {
+var search_box = document.getElementById("search_box");   // Get the element with id="demo"
+search_box.value = "فساتين زفاف";  
+});
+</script>
 
 @section('js-page','/js/pages/public/items.js')
 

@@ -13,11 +13,11 @@ class wishListController extends Controller
     function addItemToWishList(Request $request){
         $item_id = $request->input('id');
         $user_id = Auth::user()->id;
-        $is_active = Auth::user()->account_active;
-        // ceck if user account is active or not
-        if (!$is_active) {
+        $is_active = Auth::user()->email_verified_at;
+     
+        if (!Auth::user()->account_active) {
             return response()->json([
-                'message' => 'راسل الاداره لتنشيط حسابك',
+                'message' => 'الحساب غير نشط - تفقد الايميل او راسل الاداره',
                 'status' => 'danger',
             ]);
         }
@@ -28,7 +28,10 @@ class wishListController extends Controller
                 'status' => 'danger',
             ]);
         }
-        $is_added = DB::table('wishList')->where('item_id','=',$item_id)->count();
+        $is_added = DB::table('wishList')
+        ->where('item_id','=',$item_id)
+        ->where('buyer_id','=',$user_id)
+        ->count();
         if ($is_added >= 1) {
             # code...
             return response()->json([
@@ -53,29 +56,33 @@ class wishListController extends Controller
 
     function get_all_in_wishlist(){
         $current_user_id = Auth::user()->id;
-        $user_ids = DB::table('wishList')->where('buyer_id','=',$current_user_id)->pluck('buyer_id');
-        //get just subscribet users
         $date_now = carbon::now()->toDateTimeString();
-        $user_ids = DB::table('users')
-        ->whereDate('subscription_in','<',$date_now)
-        ->whereDate('subscription_out','>',$date_now)
-        ->whereIn('id',$user_ids)
-        ->pluck('id');
-        // dd('yes');
 
-        $items = DB::table('Items')
-        ->join('wishList', 'Items.id', '=', 'wishList.item_id')
-        ->whereIn('wishList.buyer_id',$user_ids)
-        ->paginate(config('conf.page_items_limit'));
+        // get all wishlist items
+        $wish_items_id = DB::table('wishList')
+        ->where('buyer_id','=',$current_user_id)
+        ->pluck('item_id');
+
+        // get all wishlist items sellers
+        $seller_ids = DB::table('Items')
+        ->whereIn('id',$wish_items_id)
+        ->pluck('seller_id');
         
-        // $items = DB::table('basket')
-        // ->join('Items', 'Items.id', '=', 'basket.item_id')
-        // ->whereIn('Items.user_id',$items_id)
-        // ->get();
+        //get just aishlist subscribet users
+        $wishlist_subscribet_users = DB::table('users')
+        ->whereDate('subscription_in','>',$date_now)
+        ->whereDate('subscription_out','<',$date_now)
+        ->orWhere('account_type','admin')
+        ->whereIn('id',$seller_ids)
+        ->pluck('id');
 
-        // dd($items);
-        return view('basket.wishlist', ['items' => $items]);
+        // get all items info
+        $wishlist_items = DB::table('Items')
+        ->whereIn('seller_id',$wishlist_subscribet_users)
+        ->whereIn('id',$wish_items_id)
+        ->paginate(config('conf.page_items_limit'));
 
+        return view('basket.wishlist', ['items' => $wishlist_items]);
     }
 
 

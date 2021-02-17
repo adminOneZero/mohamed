@@ -16,19 +16,25 @@
             <p><input type="file" name="image3" id="" value="{{ old('image3') }}"></p>
     
             <p><input name="price" value="{{ old('price') }}" type="text" placeholder="السعر"></p>
-            <p><input name="color" value="{{ old('color') }}" type="text" placeholder="اللون"></p>
-            <P>
-                <span>
-                    <input type="checkbox" name="X" value="X">
+            <p><input name="color" value="{{ old('color') }}" type="text" placeholder="الالوان : احمر,اخضر,اصفر..."></p>
+            <p><input name="commission" value="{{ old('color') }}" type="text" placeholder="العموله"></p>
+            <P class="container text-right" style="display: inline-block;direction: ltr;text-align: right;">
+                <span class="">
                     X
+                    <input type="checkbox" name="X" value="X">
+
                 </span>
-                <span>
-                    <input type="checkbox" name="L" value="L" >
+                <span >
                     L
+                    <input type="checkbox" name="L" value="L" >
                 </span>
-                <span>
-                    <input type="checkbox" name="XL" value="XL" >
+                <span >
                     XL
+                    <input type="checkbox" name="XL" value="XL" >
+                </span>
+                <span >
+                    M
+                    <input type="checkbox" name="M" value="M" >
                 </span>
             </P>
             <p>

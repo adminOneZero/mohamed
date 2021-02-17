@@ -13,14 +13,14 @@
                 <!--Start box-one-->
                 <div class="porducer-me-box box-one">
                     <div class="row">
-
                         @foreach ($items as $item)
                         <div class="col-md-4 col-sm-6  col-12">
                             <div class="box">
-                                <button class="addToWishList" data-item_id="{{ $item->id }}">Wish List</button>
                                 <div class='img-me'>
                                     <div class="overlay"></div>
-                                    <a href="/weding/{{ $item->id }}"><img src="{{ $item->image1 }}"  alt="gomla-dresses-wideings"></a>                                            <i class="far fa-heart"></i>
+                                    <a href="/item/{{ $item->id }}"><img src="{{ $item->image1 }}"  alt="gomla-dresses-wideings"></a>  
+                                    <button class="addToWishList far fa-heart" data-item_id="{{ $item->id }}"><i class=""></i></button>
+                                    {{-- <i class="far fa-heart"></i>  --}}
                                 </div>
                                 <div class="show-button">
                                     <span class="float-right">${{ $item->price }}</span>
@@ -30,6 +30,8 @@
                         </div>
                         
                         @endforeach
+                        
+                        
                         
                         
 

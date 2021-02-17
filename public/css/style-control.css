@@ -3,6 +3,14 @@
     display: none;
 }
 
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
 .dark .logo-light,
 .dark .dark-icon {
     display: none;
@@ -76,7 +84,6 @@ body {
 
 .nav-right {
     margin-left: auto;
-    /* float: left !important; */
 }
 
 .navbar-search {
@@ -433,9 +440,6 @@ body {
     }
 }
 
-
-/* Medium devices >= 768px */
-
 @media only screen and (min-width: 768px) {
     .col-m-1 {
         width: 8.33%;
@@ -666,11 +670,13 @@ table th {
 
 .btn-base {
     background-color: rgba(0, 0, 0, 0);
-    /* padding: 20px 20px 20px 20px 50%; */
     border: rgba(0, 0, 0, 0);
     color: #FFF !important;
     text-decoration: none;
-    /* border-radius: 50%; */
+}
+
+.link-btn {
+    text-decoration: none;
 }
 
 .btn1 {
@@ -681,6 +687,12 @@ table th {
 .btn-danger {
     background-color: rgb(231, 29, 54);
     padding: 5px 30px 5px 30px;
+}
+
+.btn-dark {
+    background-color: rgb(35, 47, 62);
+    padding: 5px 30px 5px 30px;
+    color: #fff;
 }
 
 .btn-success {
@@ -694,12 +706,22 @@ table th {
 }
 
 .bar {
-    /* color: rgba(0, 0, 0, .2); */
     padding: 5px 5px 5px 5px;
-    /* display: inline-block; */
     background-color: rgba(255, 255, 255, 0.1);
     box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.5);
     margin-top: 10px;
+}
+
+.noti-badge {
+    font-size: .6rem;
+    padding: 2px 4px;
+    font-weight: 300;
+    position: relative;
+    left: 20px;
+    bottom: 1px;
+    color: #fff;
+    background: rgb(230, 57, 70);
+    border-radius: 5px;
 }
 
 notiAlert
@@ -763,12 +785,10 @@ notiAlert
 }
 
 #modal fieldset {
-    /* padding: 10px 10px 10px 10px !important; */
     margin-bottom: 20px;
 }
 
 .seeStatus.active {
-    /* background-color: ; */
     background-color: rgb(144, 224, 239);
     color: #FFF !important;
 }
@@ -892,6 +912,7 @@ ul {
 .porducer-me .box .img-me .toole-me .trash,
 .porducer-me .box .img-me .toole-me .eye {
     background-color: #FFF;
+    text-decoration: none;
     color: #000;
     padding: 10px;
     border: 0;
@@ -957,17 +978,11 @@ ul {
     box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 4px 1px;
     position: relative;
     max-width: 1010px;
-    /* margin-left: 90px; */
-    /* overflow: hidden; */
-    /* width: 100% !important; */
 }
 
 .seller-view .images {
     display: inline-block;
     position: relative;
-    /* width: 50%; */
-    /* transform: translateX(50%, -50%); */
-    /* transform: translateY(-50%, 50%); */
 }
 
 .seller-view .images img {
@@ -1051,3 +1066,52 @@ ul {
 .sidebar-nav {
     margin-top: 11px !important;
 }
+
+.color-white {
+    color: #fff;
+}
+
+.color-black {
+    color: #000;
+}
+
+
+/************[Start conversion]************************/
+
+.conversion {
+    background-color: #fff;
+    width: 80%;
+    border-radius: 8px;
+    max-width: 500px;
+    margin: 15px auto;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.conversion input,
+.conversion select {
+    width: 156px;
+    margin-top: 18px;
+    height: 41px;
+    font-size: 12px;
+    background-color: transparent;
+    padding: 0 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    outline: 0;
+}
+
+.conversion button {
+    margin-top: 15px;
+    padding: 14px;
+    background-color: #232F3E;
+    color: #FFF;
+    font-size: 15px;
+    border: 0;
+    width: 100%;
+    border-radius: 5px;
+    outline: 0;
+}
+
+
+/************[End conversion]*************************/

@@ -1,34 +1,67 @@
-<x-guest-layout>
-    <x-jet-authentication-card>
-        <x-slot name="logo">
-            <x-jet-authentication-card-logo />
-        </x-slot>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
-        </div>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-        @if (session('status'))
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ session('status') }}
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title> تسجيل الدخول</title>
+
+            <!-- Google font -->
+
+            <link  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cairo|Oswald&display=swap">
+            <link  rel="stylesheet" href="https://fonts.googleapis.com/css?family=Reem+Kufi&display=swap">
+
+            <!-- Bootstrap -->
+            <link type="text/css" rel="stylesheet" href="css/bootstrap.min.css"/>
+
+            <!-- normalize -->
+            <link type="text/css" rel="stylesheet" href="css/normalize.css"/>
+
+            <!-- Font Awesome Icon -->
+            <link rel="stylesheet" href="css/all.min.css">
+
+             <!--  psge Icon -->
+             <link rel="icon" href="img/logo-2.png">
+
+            <!-- Custom stlylesheet -->
+            <link rel="stylesheet" href="css/stylePage.css"/>
+    </head>
+    <body>
+
+        <!--Start my-boxs- regstier-->
+
+        <section class="boxs-regstier text-center">
+            <div class="container">
+                <div class="boxs">
+                    <div class="sign-up">
+                        <form method="POST" action="{{ route('password.email') }}">
+                            @csrf
+                            <a href="/"><img src="img/logo-2.png" alt=""></a>
+
+                            <div class="block">
+                                <x-jet-label for="email" value="الايميل" />
+                                <x-jet-input placeholder="ادخل الايميل" id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+                            </div>
+                
+                            <div class="flex items-center justify-end mt-2">
+                                
+                                <x-jet-button class="p-3">
+                                    {{ __('Email Password Reset Link') }}
+                                </x-jet-button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
-        @endif
+        </section>
 
-        <x-jet-validation-errors class="mb-4" />
+        <!--End my-boxs- regstier-->
 
-        <form method="POST" action="{{ route('password.email') }}">
-            @csrf
-
-            <div class="block">
-                <x-jet-label for="email" value="{{ __('Email') }}" />
-                <x-jet-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <x-jet-button>
-                    {{ __('Email Password Reset Link') }}
-                </x-jet-button>
-            </div>
-        </form>
-    </x-jet-authentication-card>
-</x-guest-layout>
+        <script src="js/jQuery-min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/script.js"></script>
+    </body>
+</html>

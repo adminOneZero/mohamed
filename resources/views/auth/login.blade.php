@@ -35,20 +35,32 @@
 
         <section class="boxs-regstier text-center">
             <div class="container">
+                @if ($errors->any())
+                    @foreach ($errors->all() as $error)
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{$error}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                    @endforeach
+                @endif
                 <div class="boxs">
+                
                     <div class="sign-up">
                         <form action="/login" method="post">
+                            @csrf
 
-                            <a href="index.html"><img src="img/logo-2.png" alt=""></a>
+                            <a href="/"><img src="img/logo-2.png" alt=""></a>
 
                             <h2> تسجيل الدخول <i class="fas fa-user-alt"></i></h2>
 
                             <input type="email" name="email" placeholder="ادخل البريد الإكتروني">
 
                             <input type="password" name="password" placeholder=" كلمة المرور ">
-                            @csrf
                             <button type="submit">تسجيل الدخول</button>
 
+                            <a href="/forgot-password">هل نسيت كلمه المرور؟</a>
                             <a href="/register">انشاء حساب جديد </a>
 
                         </form>

@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $('.seeStatus').on('click', function(event) {
-        // event.preventDefault();
+        event.preventDefault();
         var id = $(this).attr('data-noti_id');
         console.log(id);
         $(this).removeClass('active');

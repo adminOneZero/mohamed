@@ -33,7 +33,8 @@
                             <div class="box">
                                 <div class='img-me'>
                                     <div class="overlay"></div>
-                                    <a href="/item/{{ $item->id }}"><img src="{{ $item->image1 }}"  alt="gomla-dresses-wideings"></a>                                            <i class="far fa-heart"></i>
+                                    <a href="/item/{{ $item->id }}"><img src="{{ $item->image1 }}"  alt="gomla-dresses-wideings"></a>                                            
+                                    {{-- <i class="far fa-heart"></i> --}}
                                 </div>
                                 <div class="show-button">
                                     <span class="float-right">${{ $item->price }}</span>

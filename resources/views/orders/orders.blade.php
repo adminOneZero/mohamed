@@ -70,7 +70,7 @@
                         <td>{{ $item->order_id }}</td>
                         {{-- <td ><img style="height: 100px; width: 90px;" src="{{ $item }}" alt=""></td> --}}
                         <td>{{ $item->name }}</td>
-                        <td>{{ $item->phone }}</td>
+                        <td dir="ltr" style="float: right">{{ $item->phone }}</td>
                         <td>{{ $item->email }}</td>
                         <td>{{ $item->address }}</td>
                         <td>{{ $item->status }}</td>
@@ -106,6 +106,7 @@
                             <th>المبلغ</th>
                             <th>الكميه</th>
                             <th>اللون</th>
+                            <th>الحجم</th>
                             <th>الحاله</th>
                         </tr>
                     </thead>

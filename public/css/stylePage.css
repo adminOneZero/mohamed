@@ -739,6 +739,8 @@ footer h5 {
 
 .porducer-me .box .img-me {
     position: relative;
+    overflow: hidden;
+    height: 420px;
 }
 
 .porducer-me .box .img-me .overlay {
@@ -758,16 +760,24 @@ footer h5 {
     position: absolute;
     top: 15px;
     right: 15px;
+    border: none;
     background-color: #FFF;
     padding: 10px;
     border-radius: 50%;
     font-size: 20px;
+    outline: 0;
+    color: #232F3E;
+}
+
+.porducer-me .show-button h3 {
+    font-size: 19px;
+    letter-spacing: 0.37px;
 }
 
 .porducer-me .show-button span {
     color: #a9a9a9;
     font-family: revert;
-    font-size: 17px;
+    font-size: 13px;
 }
 
 .porducer-me .show-button {
@@ -779,12 +789,11 @@ footer h5 {
     border: 0;
     color: #FFF;
     padding: 10px;
-    margin-right: 55%;
     font-size: 14px;
     -webkit-transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
     transition: all .2s ease-in-out;
-    width: 30%;
+    width: 100%;
 }
 
 .porducer-me .show-button button i {
@@ -796,33 +805,6 @@ footer h5 {
 
 .porducer-me .box .show-button button:hover {
     background-color: #008BFF;
-}
-
-@media (max-width: 576px) {
-    .porducer-me .show-button button {
-        width: 50%;
-        margin-right: 33%
-    }
-}
-
-@media (min-width: 768px) {
-    .porducer-me .box .img-me {
-        height: 500px
-    }
-    .porducer-me .show-button button {
-        margin-right: 46%;
-        width: 40%
-    }
-}
-
-@media (min-width: 992px) {
-    .porducer-me .box .img-me {
-        height: 420px
-    }
-    .porducer-me .show-button button {
-        margin-right: 33%;
-        width: 48%
-    }
 }
 
 .but-num {
@@ -1043,6 +1025,31 @@ footer h5 {
 
 /*----------------------------------Start this is page Subscription ---------------------------------------------------------------------*/
 
+.toole-me {
+    position: absolute;
+    width: 100%;
+    bottom: -80px;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 10px 0;
+    transition: all .2s ease-in-out;
+}
+
+.toole-me .trash,
+.toole-me .skating {
+    background-color: #f8f9fa;
+    color: #232f3e;
+    border: none;
+    font-size: 22px;
+    padding: 10px;
+    border-radius: 50%;
+    margin-left: 3%;
+    outline: none;
+}
+
+.box .img-me:hover .toole-me {
+    bottom: 0;
+}
+
 
 /*Start section-subscrip*/
 
@@ -1164,22 +1171,30 @@ footer h5 {
     width: 300px !important;
 }
 
+
+/*************************[Start bar tooles]****************************/
+
+.tooles-button {
+    background-color: #363A43;
+    width: 100%;
+    padding: 10px 0;
+}
+
 .tooles-button .buy,
 .tooles-button .clear {
     border: 0;
     outline: none;
     color: #FFF;
     padding: 10px;
-    margin-right: 1%;
     font-size: 14px;
     -webkit-transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
     transition: all .2s ease-in-out;
-    width: 11%;
 }
 
 .tooles-button .buy {
     background-color: #386641;
+    margin-right: 3%;
 }
 
 .tooles-button .clear {
@@ -1191,14 +1206,86 @@ footer h5 {
     background-color: #008bff;
 }
 
-.tooles-button {
-    width: 100%;
-}
-
 .tooles-button .clear,
 .tooles-button .buy {
-    width: 100px;
+    width: 150px;
 }
+
+.tooles-button .sub-total {
+    margin-top: 10px;
+}
+
+.tooles-button .sub-total .total-car,
+.tooles-button .sub-total .total-shiping {
+    padding: 8px;
+    color: #DDDDDD;
+}
+
+.tooles-button .sub-total .total-car span,
+.tooles-button .sub-total .total-shiping span {
+    color: #E63946;
+}
+
+
+/*************************[End bar tooles]****************************/
+
+
+/*******************[Start basket-bar]**********************************/
+
+.basket-bar {
+    background-color: #363A43;
+    width: 100%;
+    padding: 10px 0;
+}
+
+.basket-bar .buy,
+.basket-bar .clear {
+    border: 0;
+    outline: none;
+    color: #FFF;
+    padding: 10px;
+    font-size: 14px;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+.basket-bar .buy {
+    background-color: #386641;
+    margin-right: 3%;
+}
+
+.basket-bar .clear {
+    background-color: #E63946;
+}
+
+.basket-bar .buy:hover,
+.basket-bar .clear:hover {
+    background-color: #008bff;
+}
+
+.basket-bar .clear,
+.basket-bar .buy {
+    width: 150px;
+}
+
+.basket-bar .sub-total {
+    margin-top: 10px;
+}
+
+.basket-bar .sub-total .total-car,
+.basket-bar .sub-total .total-shiping {
+    padding: 8px;
+    color: #DDDDDD;
+}
+
+.basket-bar .sub-total .total-car span,
+.basket-bar .sub-total .total-shiping span {
+    color: #E63946;
+}
+
+
+/*******************[End basket-bar]********************/
 
 .addToWishList {
     background-color: rgba(0, 0, 0, 0);
@@ -1239,14 +1326,50 @@ footer h5 {
     outline: none;
 }
 
+
+/****************************[basketQuantityModal]***************************************************/
+
 .basketQuantityModal {
-    text-align: center;
+    max-width: 450px !important;
+    min-height: 599px;
+    padding: 20px 14px;
+    text-align: right;
+    border-radius: 10px !important;
+}
+
+.basketQuantityModal .header {
+    color: #008bff;
+    padding: 5px 0;
+    border-bottom: 1px solid #adb5bd;
 }
 
 .basketQuantityModal p {
-    padding: 10px;
+    margin: 0;
+    padding: 9px 0;
+    color: #495057;
+}
+
+.basketQuantityModal h6 {
+    margin: 6px 0;
+    font-weight: bold;
+}
+
+.basketQuantityModal input,
+select {
+    width: 100%;
+    margin: 6px 0;
+    padding: 7px;
+    border: 1px solid #ddd;
+    outline: 0;
 }
 
 .basketQuantityModal button {
-    padding: 2px 10px 2px 10px;
+    width: 100%;
+    margin-top: 10px;
+    background-color: #232f3e;
+    outline: 0;
+    border: none;
 }
+
+
+/****************************[basketQuantityModal]***************************************************/
